@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>fun.gengzi.grils_image</id>
+    <name>grils_image</name>
+    <vendor email="gengzi666.com" url="http://www.yourcompany.com">gengzi666</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <!-- 窗体 (IDEA 界面右侧) -->
+        <toolWindow id="grilsimage" secondary="false" anchor="right" icon="/icons/like.svg" factoryClass="fun.gengzi.ImageMain"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+
+
+    </actions>
+</idea-plugin>
