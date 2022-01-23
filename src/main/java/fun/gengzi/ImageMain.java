@@ -5,11 +5,12 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import fun.gengzi.swing.ImageShow;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.diagnostic.Logger;
 
 /**
- * <h1> </h1>
+ * <h1>侧边窗口主函数</h1>
  *
  * @author Administrator
  * @date 2022/1/22 12:58
