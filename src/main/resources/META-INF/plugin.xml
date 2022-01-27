@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>fun.gengzi.grils_image</id>
     <name>grils_image</name>
-    <vendor email="gengzi666.com" url="http://www.yourcompany.com">gengzi666</vendor>
+    <vendor email="1164014750@qq.com" url="http://gengzi666.com">gengzi666</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Random picture viewing.<br>
+    <em>Random picture viewing</em>
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
