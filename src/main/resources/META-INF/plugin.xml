@@ -15,7 +15,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!-- 窗体 (IDEA 界面右侧) -->
-        <toolWindow id="grilsimage" secondary="false" anchor="right" icon="/icons/like.svg" factoryClass="fun.gengzi.ImageMain"/>
+        <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/like.svg" factoryClass="fun.gengzi.ImageMain"/>
     </extensions>
 
     <actions>

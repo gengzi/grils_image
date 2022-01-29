@@ -2,29 +2,69 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fun.gengzi.swing.ImageShow">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="556" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="ecd21" class="javax.swing.JButton" binding="buttonup">
+      <grid id="1b516" binding="top" layout-manager="BorderLayout" hgap="3" vgap="0">
         <constraints border-constraint="North"/>
-        <properties>
-          <text value="向上"/>
-          <verticalAlignment value="0"/>
-        </properties>
-      </component>
-      <component id="703c" class="javax.swing.JButton" binding="buttondown">
-        <constraints border-constraint="South"/>
-        <properties>
-          <text value="向下"/>
-        </properties>
-      </component>
-      <grid id="964d1" binding="imagepenel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="4727" class="javax.swing.JTextField" binding="pathTextField" default-binding="true">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="231eb" class="javax.swing.JLabel" binding="path">
+            <constraints border-constraint="Before"/>
+            <properties>
+              <alignmentX value="0.5"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <labelFor value="4727"/>
+              <text value="Path："/>
+            </properties>
+          </component>
+          <component id="21fa4" class="javax.swing.JButton" binding="viewButton" default-binding="true">
+            <constraints border-constraint="East"/>
+            <properties>
+              <text value="view"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="56472" binding="showJPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children/>
+      </grid>
+      <grid id="cf323" binding="last" layout-manager="FlowLayout" hgap="5" vgap="0" flow-align="2">
+        <constraints border-constraint="South"/>
+        <properties>
+          <background color="-855310"/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="none"/>
+        <children>
+          <component id="d7b88" class="javax.swing.JButton" binding="amplifyButton">
+            <constraints/>
+            <properties>
+              <text value="变大"/>
+            </properties>
+          </component>
+          <component id="9339f" class="javax.swing.JButton" binding="narrowButton">
+            <constraints/>
+            <properties>
+              <text value="变小"/>
+            </properties>
+          </component>
+        </children>
       </grid>
     </children>
   </grid>
