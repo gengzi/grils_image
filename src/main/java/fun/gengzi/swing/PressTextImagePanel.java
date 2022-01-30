@@ -7,7 +7,6 @@ import cn.hutool.core.io.file.FileNameUtil;
 import com.intellij.openapi.util.io.PathUtil;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
-import fun.gengzi.service.StockImpl;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.JXPanel;
@@ -17,19 +16,19 @@ import java.io.File;
 
 
 /**
- * <h1>黑白照片视图</h1>
+ * <h1>TODO文字水印视图</h1>
  *
  * @author gengzi
  * @date 2022年1月29日15:05:08
  */
-public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathProcess {
+public class PressTextImagePanel extends JXPanel implements ImageFilePathProcess {
     private JXImageView jxImageView;
     private JXPanel jxPanel;
 
     /**
      * 初始化面板
      */
-    public BlackandWhiteImagePanel() {
+    public PressTextImagePanel() {
         // 根据
         jxImageView = new JXImageView();
         this.jxPanel = this;
@@ -51,7 +50,7 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);
         String newName = String.format(FileNameExtendEnum.BLACKANDWHITE_EXTEND.getFileName(), name, extName);
-        String newImagePath = parent + File.separator + newName;
+        String newImagePath = parent + File.pathSeparator + newName;
         ImgUtil.gray(file, FileUtil.file(newImagePath));
         jxImageView.setImage(new File(newImagePath));
         jxImageView.setPreferredSize(new Dimension(this.jxPanel.getWidth(), this.jxPanel.getHeight()));

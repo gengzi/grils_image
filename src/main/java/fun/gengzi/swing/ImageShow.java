@@ -14,9 +14,11 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.ui.components.JBTabbedPane;
+import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.service.StockImpl;
 import fun.gengzi.utils.IconButtonUtils;
@@ -33,6 +35,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,11 +52,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Getter
 public class ImageShow {
-
-    private JButton buttonup;
-    private JButton buttondown;
-    private JPanel imagepenel;
+    // 主面板
     private JPanel panel;
+    // 主面板顶层面板
     private JPanel top;
     private JButton amplifyButton;
     private JButton narrowButton;
@@ -61,10 +63,9 @@ public class ImageShow {
     private JPanel last;
     private JLabel path;
     private JButton viewButton;
-    private JXBusyLabel jxBusyLabel;
-    private JXImageView jxImageView;
-    private Runnable runnable;
-    private ActionEvent event;
+
+    // 随机图片面板
+    private GrilsImagePanel grilsImagePanel;
 
     // img 选项卡窗口
     private JTabbedPane imgTabbedPane;
@@ -79,8 +80,22 @@ public class ImageShow {
         LOG.info("加载开始");
         // 初始化组件
         initLoadJComponent();
-        // 异步任务
-        this.runnable = () -> showImage(this.event);
+        // 添加监听器
+        addAllListener();
+
+    }
+
+
+    private void addAllListener() {
+
+        grilsImagePanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                grilsImagePanel.getJxImageView().setPreferredSize(new Dimension(grilsImagePanel.getWidth(), grilsImagePanel.getHeight()));
+            }
+        });
+
 
         // 添加选项卡监听器
         imgTabbedPane.addChangeListener(new ChangeListener() {
@@ -116,7 +131,6 @@ public class ImageShow {
         });
 
 
-        // 向上按钮监听器,向下按钮监听器
         // addAllActionListener();
         pathTextField.addActionListener(new ActionListener() {
             /**
@@ -142,85 +156,23 @@ public class ImageShow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 文件类型
-//                FileChooserDescriptorFactory.createSingleFileDescriptor()
-                // 文件选择描述
-                FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, false, false, false, false, false);
+                FileChooserDescriptor imageDescriptor = PictureChooserDescriptor.getInstance();
                 Project openProjects = ProjectManager.getInstance().getDefaultProject();
                 // 触发文件选择
-                VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, openProjects, null);
-                String canonicalPath = virtualFile.getCanonicalPath();
-                System.out.println(canonicalPath);
+                VirtualFile virtualFile = FileChooser.chooseFile(imageDescriptor, openProjects, null);
+                String imgPath = virtualFile.getCanonicalPath();
                 // 将文件路径设置到文本区域
-                pathTextField.setText(canonicalPath);
+                pathTextField.setText(imgPath);
+                // 刷线当前页面的图片
+
+                Component selectedComponent = imgTabbedPane.getSelectedComponent();
+                if (selectedComponent instanceof ImageFilePathProcess) {
+                    ImageFilePathProcess pathProcess = (ImageFilePathProcess) selectedComponent;
+                    pathProcess.process(imgPath);
+                }
 
             }
         });
-    }
-
-    /**
-     * 添加action监听器
-     */
-    private void addAllActionListener() {
-        // 向上按钮
-        buttonup.addActionListener(e -> {
-            event = e;
-            imagepenel.remove(jxImageView);
-            jxBusyLabel.setPreferredSize(new Dimension(20, 20));
-            jxBusyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            jxBusyLabel.setBusy(true);
-            imagepenel.add(jxBusyLabel);
-            // 点击后，禁止触发
-            buttonup.setEnabled(false);
-            // 异步执行
-            UiRefreshThreadUtils.instance(runnable).start();
-        });
-        // 向下按钮
-        buttondown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                event = e;
-                imagepenel.remove(jxImageView);
-                jxBusyLabel.setPreferredSize(new Dimension(20, 20));
-                jxBusyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                jxBusyLabel.setBusy(true);
-                imagepenel.add(jxBusyLabel);
-                // 点击后，禁止触发
-                buttonup.setEnabled(false);
-                // 异步执行
-                UiRefreshThreadUtils.instance(runnable).start();
-            }
-        });
-    }
-
-    /**
-     * 无用方法
-     */
-    private void showImage() {
-        Component[] components = imagepenel.getComponents();
-        buttonup.setEnabled(true);
-        jxBusyLabel.setBusy(false);
-        imagepenel.remove(jxBusyLabel);
-        imagepenel.add(jxImageView);
-    }
-
-    /**
-     * 展示image
-     *
-     * @param e 事件属性
-     */
-    private void showImage(ActionEvent e) {
-        try {
-            jxImageView.setImage(new File(StockImpl.upOrDownImage()));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-        buttonup.setEnabled(true);
-        jxBusyLabel.setBusy(false);
-        imagepenel.remove(jxBusyLabel);
-        imagepenel.add(jxImageView);
-        Action zoomInAction = jxImageView.getZoomOutAction();
-        zoomInAction.actionPerformed(e);
-        imagepenel.updateUI();
     }
 
 
@@ -228,23 +180,13 @@ public class ImageShow {
      * 初始化页面中的组件
      */
     private void initLoadJComponent() {
-
-        // 加载动画
-        jxBusyLabel = new JXBusyLabel();
-        jxImageView = new JXImageView();
-        try {
-            jxImageView.setImage(new File(StockImpl.upOrDownImage()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        imagepenel.add(jxImageView, BorderLayout.CENTER);
-
-
         // 初始化img选项卡窗口，默认加载一张图
         imgTabbedPane = new JBTabbedPane();
+
+        grilsImagePanel = new GrilsImagePanel();
         // 添加各个面板
-        imgTabbedPane.addTab("美女图片", jxImageView);
-        allTabbedPane.add(jxImageView);
+        imgTabbedPane.addTab("美女图片", grilsImagePanel);
+        allTabbedPane.add(grilsImagePanel);
 
         BlackandWhiteImagePanel blackandWhiteImagePanel = new BlackandWhiteImagePanel();
         imgTabbedPane.addTab("黑白图片", blackandWhiteImagePanel);
