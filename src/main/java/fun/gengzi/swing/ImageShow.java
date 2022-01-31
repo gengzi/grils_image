@@ -20,6 +20,7 @@ import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.ui.components.JBTabbedPane;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.service.StockImpl;
 import fun.gengzi.utils.IconButtonUtils;
 import fun.gengzi.utils.UiRefreshThreadUtils;
@@ -70,6 +71,8 @@ public class ImageShow {
     // img 选项卡窗口
     private JTabbedPane imgTabbedPane;
 
+    private PixelImagePanel pixelImagePanel;
+
     // 日志
     private static final Logger LOG = Logger.getInstance(ImageShow.class);
 
@@ -106,9 +109,10 @@ public class ImageShow {
                 String imgPath = pathTextField.getText();
                 if (ObjectUtil.isEmpty(imgPath)) {
                     // 提示
-                    JBPopupFactory instance = JBPopupFactory.getInstance();
-                    JBPopup jbPopup = instance.createMessage("place input image path,thanks!");
-                    jbPopup.show(showJPanel);
+//                    JBPopupFactory instance = JBPopupFactory.getInstance();
+//                    JBPopup jbPopup = instance.createMessage("place input image path,thanks!");
+//                    jbPopup.show(showJPanel);
+                    NotficationMsg.notifySelectImgMsg("");
                     return;
                 }
                 JBTabbedPane source = (JBTabbedPane) e.getSource();
@@ -188,9 +192,20 @@ public class ImageShow {
         imgTabbedPane.addTab("美女图片", grilsImagePanel);
         allTabbedPane.add(grilsImagePanel);
 
+        AsciImagePanel asciImagePanel = new AsciImagePanel();
+        imgTabbedPane.addTab("ASCI图片", asciImagePanel);
+        allTabbedPane.add(asciImagePanel);
+
         BlackandWhiteImagePanel blackandWhiteImagePanel = new BlackandWhiteImagePanel();
-        imgTabbedPane.addTab("黑白图片", blackandWhiteImagePanel);
+        imgTabbedPane.addTab("灰色图片", blackandWhiteImagePanel);
         allTabbedPane.add(blackandWhiteImagePanel);
+
+
+        pixelImagePanel = new PixelImagePanel();
+        imgTabbedPane.addTab("像素图片", pixelImagePanel);
+        allTabbedPane.add(pixelImagePanel);
+
+
         showJPanel.add(imgTabbedPane);
 
     }

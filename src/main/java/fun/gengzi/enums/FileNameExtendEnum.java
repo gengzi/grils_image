@@ -9,8 +9,11 @@ import lombok.Getter;
 public enum FileNameExtendEnum {
 
     // 黑白照片
-    BLACKANDWHITE_EXTEND("%s_blackandwhite.%s");
-
+    BLACKANDWHITE_EXTEND("%s_blackandwhite.%s"),
+    // ASCII 照片
+    ASCIIMG_EXTEND("%s_asciimg.%s"),
+    // ASCII 照片
+    PIXELIMG_EXTEND("%s_pixelimg.%s");
 
     /**
      * 文件名称

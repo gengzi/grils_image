@@ -1,6 +1,15 @@
 package fun.gengzi.swing;
 
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
+import com.intellij.openapi.fileEditor.impl.EditorWindow;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.service.StockImpl;
 import fun.gengzi.utils.UiRefreshThreadUtils;
@@ -15,6 +24,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 
 /**
@@ -33,6 +43,8 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
     // 异步刷新任务
     private Runnable runnable;
     private JXBusyLabel jxBusyLabel;
+
+    private static final Logger LOG = Logger.getInstance(GrilsImagePanel.class);
 
     /**
      * 初始化面板
@@ -55,6 +67,7 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
         buttondown = new JButton("down");
         jxBusyLabel = new JXBusyLabel();
         jxImageView = new JXImageView();
+        jxImageView.setToolTipText("当前页面资源均来源网络采集，仅供学习，请及时删除！");
         jxImageView.setImage(new File(StockImpl.upOrDownImage()));
         jxImageView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         this.add(buttondown, BorderLayout.PAGE_END);
@@ -70,7 +83,6 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
      */
     @Override
     public void process(String imgPath) {
-        // 不做处理
     }
 
 
@@ -124,5 +136,4 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
         zoomInAction.actionPerformed(e);
         this.jxPanel.updateUI();
     }
-
 }
