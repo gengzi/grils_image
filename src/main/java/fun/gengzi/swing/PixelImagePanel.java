@@ -3,31 +3,23 @@ package fun.gengzi.swing;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.PathUtil;
-import fun.gengzi.asciimg.image.AsciiImgCache;
-import fun.gengzi.asciimg.image.character_fit_strategy.ColorSquareErrorFitStrategy;
-import fun.gengzi.asciimg.image.character_fit_strategy.StructuralSimilarityFitStrategy;
-import fun.gengzi.asciimg.image.converter.AsciiToImageConverter;
-import fun.gengzi.asciimg.image.converter.AsciiToStringConverter;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
+import fun.gengzi.utils.I18nBundle;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
-import org.jf.util.StringUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,13 +63,14 @@ public class PixelImagePanel extends JXPanel implements ImageFilePathProcess {
     private void initCompant() throws IOException {
         lastPanel = new JXPanel();
         thresholdLabel = new JXLabel();
-        thresholdLabel.setText("threshold:");
+        thresholdLabel.setText(I18nBundle.message(I18nBundle.Key.PIXELIMAGEPANEL_THRESHOLD));
         okButton = new JXButton();
         okButton.setText("ok");
         lastPanel.setLayout(new BorderLayout());
         jxImageView = new JXImageView();
         jxImageView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         imageThreshold = new JTextField();
+        imageThreshold.setToolTipText(I18nBundle.message(I18nBundle.Key.PIXELIMAGEPANEL_IMGPATH_TOOLTIPTEXT));
         lastPanel.add(thresholdLabel, BorderLayout.LINE_START);
         lastPanel.add(imageThreshold, BorderLayout.CENTER);
         lastPanel.add(okButton, BorderLayout.LINE_END);
@@ -100,6 +93,10 @@ public class PixelImagePanel extends JXPanel implements ImageFilePathProcess {
     @SneakyThrows
     @Override
     public void process(String imgPath) {
+        boolean blank = NotficationMsg.isBlank(imgPath);
+        if (blank) {
+            return;
+        }
         this.imgPath = imgPath;
         File file = FileUtil.file(imgPath);
         String parent = PathUtil.getParent(imgPath);

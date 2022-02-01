@@ -1,12 +1,15 @@
 package fun.gengzi.filetype;
 
+import cn.hutool.core.lang.Singleton;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * <H1>图片选择描述</H1>
+ * <H1>文件类型选择过滤描述</H1>
+ * <p>
+ * 支持选择 "jpg", "jpeg", "png", "bmp", "gif" 这些类型的文件
  *
  * @author gengzi
  * @date 2022年1月30日22:39:42
@@ -24,7 +27,7 @@ public class PictureChooserDescriptor extends FileChooserDescriptor {
      * @return PictureChooserDescriptor
      */
     public static PictureChooserDescriptor getInstance() {
-        return new PictureChooserDescriptor(true, false, false, false, false, false);
+        return Singleton.get(PictureChooserDescriptor.class, true, false, false, false, false, false);
     }
 
 
@@ -40,6 +43,7 @@ public class PictureChooserDescriptor extends FileChooserDescriptor {
      */
     private PictureChooserDescriptor(boolean chooseFiles, boolean chooseFolders, boolean chooseJars, boolean chooseJarsAsFiles, boolean chooseJarContents, boolean chooseMultiple) {
         super(chooseFiles, chooseFolders, chooseJars, chooseJarsAsFiles, chooseJarContents, chooseMultiple);
+        // 增加过滤
         super.withFileFilter(file ->
                 file.getExtension() != null && PICTURE_EXTENSION_LIST.contains(file.getExtension().toLowerCase())
         );

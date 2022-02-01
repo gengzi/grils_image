@@ -1,6 +1,8 @@
 package fun.gengzi.constant;
 
 
+import fun.gengzi.utils.I18nBundle;
+
 /**
  * <h1>全局常量</h1>
  *
@@ -12,6 +14,5 @@ public class GlobalConstant {
 
     //
     public static final String DEFAULTSAVEFILEPATH_WIN = "";
-
 
 }

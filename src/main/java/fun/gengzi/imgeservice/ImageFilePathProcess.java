@@ -11,7 +11,7 @@ public interface ImageFilePathProcess {
 
 
     /**
-     * 根据图片路径处理图片
+     * 公共方法：根据图片路径处理图片
      *
      * @param imgPath 图片路径
      */

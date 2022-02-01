@@ -1,10 +1,9 @@
 package fun.gengzi.swing;
 
 
-import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
-import com.intellij.notification.*;
+import cn.hutool.core.util.StrUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.PathUtil;
 import fun.gengzi.asciimg.image.AsciiImgCache;
@@ -15,18 +14,13 @@ import fun.gengzi.asciimg.image.converter.AsciiToStringConverter;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
-import fun.gengzi.service.StockImpl;
-import fun.gengzi.utils.UiRefreshThreadUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.JXPanel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +65,10 @@ public class AsciImagePanel extends JXPanel implements ImageFilePathProcess {
     @SneakyThrows
     @Override
     public void process(String imgPath) {
+        boolean blank = NotficationMsg.isBlank(imgPath);
+        if (blank) {
+            return;
+        }
         File file = FileUtil.file(imgPath);
         String parent = PathUtil.getParent(imgPath);
         // 解析文件名称
@@ -83,8 +81,6 @@ public class AsciImagePanel extends JXPanel implements ImageFilePathProcess {
         jxImageView.setImage(new File(newImagePath));
         jxImageView.setPreferredSize(new Dimension(this.jxPanel.getWidth(), this.jxPanel.getHeight()));
         jxImageView.setMinimumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-
-
         NotficationMsg.notifySaveImgMsg(newImagePath);
     }
 

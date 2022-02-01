@@ -1,34 +1,19 @@
 package fun.gengzi.swing;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.FileTypeFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.ui.components.JBTabbedPane;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
-import fun.gengzi.service.StockImpl;
-import fun.gengzi.utils.IconButtonUtils;
-import fun.gengzi.utils.UiRefreshThreadUtils;
+import fun.gengzi.utils.I18nBundle;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.jdesktop.swingx.JXBusyLabel;
-import org.jdesktop.swingx.JXImageView;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -38,12 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <h1> 图片展示 </h1>
@@ -107,12 +86,8 @@ public class ImageShow {
             public void stateChanged(ChangeEvent e) {
                 // 获取图片路径
                 String imgPath = pathTextField.getText();
-                if (ObjectUtil.isEmpty(imgPath)) {
-                    // 提示
-//                    JBPopupFactory instance = JBPopupFactory.getInstance();
-//                    JBPopup jbPopup = instance.createMessage("place input image path,thanks!");
-//                    jbPopup.show(showJPanel);
-                    NotficationMsg.notifySelectImgMsg("");
+                boolean blank = NotficationMsg.isBlank(imgPath);
+                if (blank) {
                     return;
                 }
                 JBTabbedPane source = (JBTabbedPane) e.getSource();
@@ -186,24 +161,22 @@ public class ImageShow {
     private void initLoadJComponent() {
         // 初始化img选项卡窗口，默认加载一张图
         imgTabbedPane = new JBTabbedPane();
-
-        grilsImagePanel = new GrilsImagePanel();
         // 添加各个面板
-        imgTabbedPane.addTab("美女图片", grilsImagePanel);
-        allTabbedPane.add(grilsImagePanel);
-
         AsciImagePanel asciImagePanel = new AsciImagePanel();
-        imgTabbedPane.addTab("ASCI图片", asciImagePanel);
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_ASCIIMAGEPANEL), asciImagePanel);
         allTabbedPane.add(asciImagePanel);
 
         BlackandWhiteImagePanel blackandWhiteImagePanel = new BlackandWhiteImagePanel();
-        imgTabbedPane.addTab("灰色图片", blackandWhiteImagePanel);
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_BLACKANDWHITEIMAGEPANEL), blackandWhiteImagePanel);
         allTabbedPane.add(blackandWhiteImagePanel);
 
-
         pixelImagePanel = new PixelImagePanel();
-        imgTabbedPane.addTab("像素图片", pixelImagePanel);
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
+        // 美女图片
+        grilsImagePanel = new GrilsImagePanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
+        allTabbedPane.add(grilsImagePanel);
 
 
         showJPanel.add(imgTabbedPane);

@@ -12,6 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.service.StockImpl;
+import fun.gengzi.utils.I18nBundle;
 import fun.gengzi.utils.UiRefreshThreadUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -67,7 +68,7 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
         buttondown = new JButton("down");
         jxBusyLabel = new JXBusyLabel();
         jxImageView = new JXImageView();
-        jxImageView.setToolTipText("当前页面资源均来源网络采集，仅供学习，请及时删除！");
+        jxImageView.setToolTipText(I18nBundle.message(I18nBundle.Key.TOOLTIPTEXT_IMAGEVIEW_CONTENT));
         jxImageView.setImage(new File(StockImpl.upOrDownImage()));
         jxImageView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         this.add(buttondown, BorderLayout.PAGE_END);

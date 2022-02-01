@@ -7,6 +7,7 @@ import cn.hutool.core.io.file.FileNameUtil;
 import com.intellij.openapi.util.io.PathUtil;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.service.StockImpl;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXImageView;
@@ -33,8 +34,10 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
         // 根据
         jxImageView = new JXImageView();
         this.jxPanel = this;
+        this.setLayout(new BorderLayout());
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        this.add(jxImageView);
+        jxImageView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        this.add(jxImageView, BorderLayout.CENTER);
     }
 
     /**
@@ -45,17 +48,22 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
     @SneakyThrows
     @Override
     public void process(String imgPath) {
+        boolean blank = NotficationMsg.isBlank(imgPath);
+        if (blank) {
+            return;
+        }
         File file = FileUtil.file(imgPath);
         String parent = PathUtil.getParent(imgPath);
         // 解析文件名称
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);
         String newName = String.format(FileNameExtendEnum.BLACKANDWHITE_EXTEND.getFileName(), name, extName);
-        String newImagePath = parent + File.separator + newName;
+        String newImagePath = FileUtil.getAbsolutePath(parent + File.separator + newName);
         ImgUtil.gray(file, FileUtil.file(newImagePath));
         jxImageView.setImage(new File(newImagePath));
         jxImageView.setPreferredSize(new Dimension(this.jxPanel.getWidth(), this.jxPanel.getHeight()));
         jxImageView.setMinimumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         jxImageView.updateUI();
+        NotficationMsg.notifySaveImgMsg(newImagePath);
     }
 }

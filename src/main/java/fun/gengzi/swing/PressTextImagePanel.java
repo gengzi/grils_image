@@ -7,6 +7,7 @@ import cn.hutool.core.io.file.FileNameUtil;
 import com.intellij.openapi.util.io.PathUtil;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.message.NotficationMsg;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXImageView;
 import org.jdesktop.swingx.JXPanel;
@@ -44,6 +45,10 @@ public class PressTextImagePanel extends JXPanel implements ImageFilePathProcess
     @SneakyThrows
     @Override
     public void process(String imgPath) {
+        boolean blank = NotficationMsg.isBlank(imgPath);
+        if (blank) {
+            return;
+        }
         File file = FileUtil.file(imgPath);
         String parent = PathUtil.getParent(imgPath);
         // 解析文件名称
