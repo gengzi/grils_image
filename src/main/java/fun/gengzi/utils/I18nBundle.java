@@ -31,8 +31,6 @@ public class I18nBundle extends AbstractBundle {
     public enum Key {
         // 插件名称
         PLUGIN_NAME("plugin.name"),
-
-        // 通知 - 保存图片文件
         NOTFICATIONMSG_SAVE_TITLE("notficationMsg.save.title"),
         NOTFICATIONMSG_SAVE_CONTENT("notficationMsg.save.content"),
         NOTFICATIONMSG_CHOOSE_TITLE("notficationMsg.choose.title"),
@@ -40,10 +38,18 @@ public class I18nBundle extends AbstractBundle {
         TOOLTIPTEXT_IMAGEVIEW_CONTENT("tooltiptext.imageview.content"),
         PIXELIMAGEPANEL_IMGPATH_TOOLTIPTEXT("pixelimagepanel.imgPath.tooltiptext"),
         PIXELIMAGEPANEL_THRESHOLD("pixelimagepanel.threshold"),
-        IMGTABBEDPANE_TAB_ASCIIMAGEPANEL("imgtabbedpane.tab.asciimagepanel "),
-        IMGTABBEDPANE_TAB_BLACKANDWHITEIMAGEPANEL("imgtabbedpane.tab.blackandwhiteimagepanel "),
-        IMGTABBEDPANE_TAB_GRILSIMAGEPANEL("imgtabbedpane.tab.grilsimagepanel "),
-        IMGTABBEDPANE_TAB_PIXELIMAGEPANEL("imgtabbedpane.tab.pixelimagepanel ");
+        IMGTABBEDPANE_TAB_ASCIIMAGEPANEL("imgtabbedpane.tab.asciimagepanel"),
+        IMGTABBEDPANE_TAB_BLACKANDWHITEIMAGEPANEL("imgtabbedpane.tab.blackandwhiteimagepanel"),
+        IMGTABBEDPANE_TAB_GRILSIMAGEPANEL("imgtabbedpane.tab.grilsimagepanel"),
+        IMGTABBEDPANE_TAB_PIXELIMAGEPANEL("imgtabbedpane.tab.pixelimagepanel"),
+
+        ASCIIMAGEPANEL_FONTSTYLELABEL_TEXT("asciimagepanel.fontStyleLabel.text"),
+        ASCIIMAGEPANEL_SIZELABEL_TEXT("asciimagepanel.sizeLabel.text"),
+        ASCIIMAGEPANEL_CHARLABEL_TEXT("asciimagepanel.charLabel.text"),
+        ASCIIMAGEPANEL_FONTSTYLEVALUES_PLAIN("asciimagepanel.fontstylevalues.plain"),
+        ASCIIMAGEPANEL_FONTSTYLEVALUES_BOLD("asciimagepanel.fontstylevalues.bold"),
+        ASCIIMAGEPANEL_FONTSTYLEVALUES_ITALIC("asciimagepanel.fontstylevalues.italic"),
+        ASCIIMAGEPANEL_FONTLABEL_TEXT("asciimagepanel.fontLabel.text");
 
 
         final String value;
