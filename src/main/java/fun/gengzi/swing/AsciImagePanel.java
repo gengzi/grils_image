@@ -13,6 +13,7 @@ import fun.gengzi.asciimg.image.character_fit_strategy.ColorSquareErrorFitStrate
 import fun.gengzi.asciimg.image.character_fit_strategy.StructuralSimilarityFitStrategy;
 import fun.gengzi.asciimg.image.converter.AsciiToImageConverter;
 import fun.gengzi.asciimg.image.converter.AsciiToStringConverter;
+import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.enums.FontStyleEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
@@ -90,7 +91,8 @@ public class AsciImagePanel extends JXPanel implements ImageFilePathProcess {
         sizeLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.ASCIIMAGEPANEL_SIZELABEL_TEXT));
         charLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.ASCIIMAGEPANEL_CHARLABEL_TEXT));
         charsTextField = new JTextField();
-        charsTextField.setMaximumSize(new Dimension(200,100));
+        charsTextField.setText(GlobalConstant.DEFAULT_CHARS);
+        charsTextField.setMaximumSize(new Dimension(200, 100));
         fontStyleComboBox = new ComboBox(FONTSTYLEVALUES);
         // 默认选中第一个
         fontStyleComboBox.setSelectedIndex(0);
@@ -174,13 +176,13 @@ public class AsciImagePanel extends JXPanel implements ImageFilePathProcess {
         // initialize converters
         AsciiToImageConverter imageConverter =
                 new AsciiToImageConverter(cache, new ColorSquareErrorFitStrategy());
-        AsciiToStringConverter stringConverter =
-                new AsciiToStringConverter(cache, new StructuralSimilarityFitStrategy());
+//        AsciiToStringConverter stringConverter =
+//                new AsciiToStringConverter(cache, new StructuralSimilarityFitStrategy());
         // image output
         ImageIO.write(imageConverter.convertImage(portraitImage), "png",
                 new File(newImgPath));
         // string converter, output to console
-        System.out.println(stringConverter.convertImage(portraitImage));
+//        System.out.println(stringConverter.convertImage(portraitImage));
     }
 
 }

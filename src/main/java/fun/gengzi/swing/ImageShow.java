@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.components.JBTabbedPane;
+import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
@@ -23,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.net.URL;
 
 /**
  * <h1> 图片展示 </h1>
@@ -45,7 +47,7 @@ public class ImageShow {
     private JButton viewButton;
 
     // 随机图片面板
-    private GrilsImagePanel grilsImagePanel;
+//    private GrilsImagePanel grilsImagePanel;
 
     // img 选项卡窗口
     private JTabbedPane imgTabbedPane;
@@ -70,13 +72,13 @@ public class ImageShow {
 
     private void addAllListener() {
 
-        grilsImagePanel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-                grilsImagePanel.getJxImageView().setPreferredSize(new Dimension(grilsImagePanel.getWidth(), grilsImagePanel.getHeight()));
-            }
-        });
+//        grilsImagePanel.addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentShown(ComponentEvent e) {
+//                super.componentShown(e);
+//                grilsImagePanel.getJxImageView().setPreferredSize(new Dimension(grilsImagePanel.getWidth(), grilsImagePanel.getHeight()));
+//            }
+//        });
 
 
         // 添加选项卡监听器
@@ -162,6 +164,10 @@ public class ImageShow {
         // 初始化img选项卡窗口，默认加载一张图
         imgTabbedPane = new JBTabbedPane();
         // 添加各个面板
+        ImageShowPanel imageShowPanel = new ImageShowPanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_IMAGESHOWPANEL), imageShowPanel);
+        allTabbedPane.add(imageShowPanel);
+
         AsciImagePanel asciImagePanel = new AsciImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_ASCIIMAGEPANEL), asciImagePanel);
         allTabbedPane.add(asciImagePanel);
@@ -173,13 +179,11 @@ public class ImageShow {
         pixelImagePanel = new PixelImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
-        // 美女图片
-        grilsImagePanel = new GrilsImagePanel();
-        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
-        allTabbedPane.add(grilsImagePanel);
-
+//        // 美女图片
+//        grilsImagePanel = new GrilsImagePanel();
+//        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
+//        allTabbedPane.add(grilsImagePanel);
 
         showJPanel.add(imgTabbedPane);
-
     }
 }

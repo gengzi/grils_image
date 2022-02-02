@@ -1,11 +1,13 @@
 <idea-plugin>
-    <id>fun.gengzi.grils_image</id>
-    <name>grils_image</name>
-    <vendor email="1164014750@qq.com" url="http://gengzi666.com">gengzi666</vendor>
+    <id>fun.gengzi.imagetools</id>
+    <name>imagetools</name>
+    <vendor email="1164014750@qq.com" url="https://github.com/gengzi">gengzi666</vendor>
 
     <description><![CDATA[
-    Random picture viewing.<br>
-    <em>Random picture viewing</em>
+        Image processing tools to help developers use existing images to do some transformations.<br>
+    <em>1.ASCII image conversion tool, you can adjust the font, size, font style and character set to generate an ASCII image</em>
+    <em>3.Pixel image conversion tool, now only supports adjusting pixel threshold 0~255</em>
+    <em>2.Gray Image Conversion tool</em>
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -20,7 +22,6 @@
 
     <actions>
         <!-- Add your actions here -->
-
 
     </actions>
 </idea-plugin>

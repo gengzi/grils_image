@@ -42,6 +42,7 @@ public class I18nBundle extends AbstractBundle {
         IMGTABBEDPANE_TAB_BLACKANDWHITEIMAGEPANEL("imgtabbedpane.tab.blackandwhiteimagepanel"),
         IMGTABBEDPANE_TAB_GRILSIMAGEPANEL("imgtabbedpane.tab.grilsimagepanel"),
         IMGTABBEDPANE_TAB_PIXELIMAGEPANEL("imgtabbedpane.tab.pixelimagepanel"),
+        IMGTABBEDPANE_TAB_IMAGESHOWPANEL("imgtabbedpane.tab.imageshowpanel"),
 
         ASCIIMAGEPANEL_FONTSTYLELABEL_TEXT("asciimagepanel.fontStyleLabel.text"),
         ASCIIMAGEPANEL_SIZELABEL_TEXT("asciimagepanel.sizeLabel.text"),
