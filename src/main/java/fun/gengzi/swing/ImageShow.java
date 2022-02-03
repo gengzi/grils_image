@@ -8,13 +8,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.components.JBTabbedPane;
-import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.jdesktop.swingx.JXPanel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -22,9 +22,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.net.URL;
 
 /**
  * <h1> 图片展示 </h1>
@@ -58,7 +55,7 @@ public class ImageShow {
     private static final Logger LOG = Logger.getInstance(ImageShow.class);
 
     // 存储所有选项卡中的面板
-    private static final ConcurrentHashSet allTabbedPane = new ConcurrentHashSet<Object>();
+    private static final ConcurrentHashSet allTabbedPane = new ConcurrentHashSet<JXPanel>();
 
     public ImageShow() {
         LOG.info("加载开始");
