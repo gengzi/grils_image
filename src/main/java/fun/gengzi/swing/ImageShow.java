@@ -1,12 +1,14 @@
 package fun.gengzi.swing;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import com.intellij.codeInsight.preview.ImagePreviewComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.rt.debugger.ImageSerializer;
 import com.intellij.ui.components.JBTabbedPane;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
@@ -165,6 +167,11 @@ public class ImageShow {
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_IMAGESHOWPANEL), imageShowPanel);
         allTabbedPane.add(imageShowPanel);
 
+
+        Base64ImagePanel base64ImagePanel = new Base64ImagePanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_BASE64IMAGEPANEL), base64ImagePanel);
+        allTabbedPane.add(base64ImagePanel);
+
         AsciImagePanel asciImagePanel = new AsciImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_ASCIIMAGEPANEL), asciImagePanel);
         allTabbedPane.add(asciImagePanel);
@@ -176,10 +183,18 @@ public class ImageShow {
         pixelImagePanel = new PixelImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
+
+
+
+
+
 //        // 美女图片
 //        grilsImagePanel = new GrilsImagePanel();
 //        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
 //        allTabbedPane.add(grilsImagePanel);
+
+
+
 
         showJPanel.add(imgTabbedPane);
     }

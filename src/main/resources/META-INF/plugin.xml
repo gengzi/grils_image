@@ -24,7 +24,10 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <!--// TODO Add your actions here -->
+        <action id="uigd.EncodeImageBase64" class="fun.gengzi.action.Base64AnAction" icon="/icons/like.svg" text="Encode with Base64" description="Encode current image with base64">
+            <add-to-group group-id="Images.EditorToolbar" anchor="last"/>
+        </action>
 
     </actions>
 </idea-plugin>
