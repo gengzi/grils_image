@@ -133,8 +133,8 @@ public class GrilsImagePanel extends JXPanel implements ImageFilePathProcess {
         jxBusyLabel.setBusy(false);
         this.jxPanel.remove(jxBusyLabel);
         this.jxPanel.add(jxImageView);
-        Action zoomInAction = jxImageView.getZoomOutAction();
-        zoomInAction.actionPerformed(e);
+//        Action zoomInAction = jxImageView.getZoomOutAction();
+//        zoomInAction.actionPerformed(e);
         this.jxPanel.updateUI();
     }
 }

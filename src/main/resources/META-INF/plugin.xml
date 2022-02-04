@@ -6,8 +6,10 @@
     <description><![CDATA[
         Image processing tools to help developers use existing images to do some transformations.<br>
     <em>1.ASCII image conversion tool, you can adjust the font, size, font style and character set to generate an ASCII image</em>
-    <em>3.Pixel image conversion tool, now only supports adjusting pixel threshold 0~255</em>
-    <em>2.Gray Image Conversion tool</em>
+    <br>
+    <em>2.Pixel image conversion tool, now only supports adjusting pixel threshold 0~255</em>
+    <br>
+    <em>3.Gray Image Conversion tool</em>
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
