@@ -17,7 +17,9 @@ public enum FileNameExtendEnum {
     BLACKANDWHITE_EXTEND("%s_blackandwhite.%s"),
     // ASCII 照片
     ASCIIMG_EXTEND("%s_asciimg.%s"),
-    // ASCII 照片
+    // base64 图片
+    BASE64_EXTEND("%s_base64.%s"),
+    // 像素照片
     PIXELIMG_EXTEND("%s_pixelimg.%s");
 
     /**

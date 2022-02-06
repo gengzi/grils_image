@@ -31,6 +31,20 @@ public class NotficationMsg {
 
     /**
      * 图片保存提示
+     *
+     * @param errorMsg 错误信息
+     */
+    public static void notifyErrorMsg(String errorMsg) {
+        String NOTFICATIONMSG_ERROR_TITLE = I18nBundle.message(I18nBundle.Key.NOTFICATIONMSG_ERROR_TITLE);
+        String NOTFICATIONMSG_ERROR_CONTENT = I18nBundle.message(I18nBundle.Key.NOTFICATIONMSG_ERROR_CONTENT);
+        // 推送消息，告知保存位置以及名称
+        Notification notification = NOTIFICATION_GROUP.createNotification(NOTFICATIONMSG_ERROR_TITLE, String.format(NOTFICATIONMSG_ERROR_CONTENT, errorMsg),
+                NotificationType.INFORMATION, null);
+        Notifications.Bus.notify(notification);
+    }
+
+    /**
+     * 图片保存提示
      * @param imgPath 保存后的图片路径
      */
     public static void notifySaveImgMsg(String imgPath) {

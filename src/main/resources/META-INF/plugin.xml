@@ -22,7 +22,7 @@
     <!-- 最低构建版本和最高构建版本   -->
     <!-- 内部编号范围：https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html-->
     <!-- since-build 最低插件版本，until-build 最高插件版本，可以查看上述的内部编号。上传插件后，JetBrains 会自动检测兼容的插件   -->
-    <idea-version since-build="201.6668" until-build="213.*"/>
+    <idea-version since-build="201.6668" until-build="203.*"/>
 
 
     <!-- Custom extensions declaration. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extensions.html#declaring-extensions -->
@@ -30,7 +30,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!-- 窗体 (IDEA 界面右侧) -->
-        <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/like.svg"
+        <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/imagetools.svg"
                     factoryClass="fun.gengzi.ImageMain"/>
     </extensions>
 

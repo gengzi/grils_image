@@ -35,6 +35,8 @@ public class I18nBundle extends AbstractBundle {
         NOTFICATIONMSG_SAVE_CONTENT("notficationMsg.save.content"),
         NOTFICATIONMSG_CHOOSE_TITLE("notficationMsg.choose.title"),
         NOTFICATIONMSG_CHOOSE_CONTENT("notficationMsg.choose.content"),
+        NOTFICATIONMSG_ERROR_TITLE("notficationMsg.error.title"),
+        NOTFICATIONMSG_ERROR_CONTENT("notficationMsg.error.content"),
         TOOLTIPTEXT_IMAGEVIEW_CONTENT("tooltiptext.imageview.content"),
         PIXELIMAGEPANEL_IMGPATH_TOOLTIPTEXT("pixelimagepanel.imgPath.tooltiptext"),
         PIXELIMAGEPANEL_THRESHOLD("pixelimagepanel.threshold"),
@@ -45,6 +47,8 @@ public class I18nBundle extends AbstractBundle {
         IMGTABBEDPANE_TAB_IMAGESHOWPANEL("imgtabbedpane.tab.imageshowpanel"),
         IMGTABBEDPANE_TAB_BASE64IMAGEPANEL("imgtabbedpane.tab.base64imagepanel"),
         BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT("base64imagepanel.tobase64button.text"),
+        BASE64IMAGEPANEL_SAVEASBUTTON_TEXT("base64imagepanel.saveAsButton.text"),
+        BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT("base64imagepanel.saveAs.error.text"),
 
         ASCIIMAGEPANEL_FONTSTYLELABEL_TEXT("asciimagepanel.fontStyleLabel.text"),
         ASCIIMAGEPANEL_SIZELABEL_TEXT("asciimagepanel.sizeLabel.text"),
