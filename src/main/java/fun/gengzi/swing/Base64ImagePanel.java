@@ -23,11 +23,8 @@ import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXPanel;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
@@ -83,7 +80,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
 
     private void initCompant() throws IOException {
         // 顶部panel
-        topPanel = new JXPanel(new FlowLayout());
+        topPanel = new JXPanel(new FlowLayout(FlowLayout.LEADING));
         imgTypeComboBox = new ComboBox(IMAGE_TYPE.toArray(arr));
         imgTypeComboBox.setSelectedIndex(0);
         imageTypeTextField = new JBTextField();
@@ -139,16 +136,6 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             imageTypeTextField.setText(tobase64ImageTypeStr(selectedItem));
         });
 
-
-
-
-
-
-
-
-
-
-
         toBase64Button.addActionListener(e -> {
             String x = ";base64,";
             // base64 转 image
@@ -157,35 +144,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             String[] split = content.split(x);
             String imgtype = split[0].replace("data:image/", "");
             BufferedImage bufferedImage = ImgUtil.toImage(split[split.length - 1]);
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            try {
-//                ImageIO.write(bufferedImage, imgtype, out);
-//            } catch (IOException ioException) {
-//                ioException.printStackTrace();
-//            }
-//            LightVirtualFile virtualFile = new LightVirtualFile();
-//            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-//                @SneakyThrows
-//                @Override
-//                public void run() {
-//                    virtualFile.setWritable(true);
-//                    virtualFile.setBinaryContent(out.toByteArray());
-//                }
-//            });
             jxImageView.showImage(bufferedImage);
-//
-//            ImageWriter writer = ImgUtil.getWriter(bufferedImage, imgtype);
-//            try {
-//                ImgUtil.write(bufferedImage, imgtype, new FileOutputStream(new File("C:\\Users\\Administrator\\Desktop\\wallhaven-e7rje8.jpg")));
-//            } catch (FileNotFoundException fileNotFoundException) {
-//                fileNotFoundException.printStackTrace();
-//            }
-//
-//
-//            JBPopupMenu jbPopupMenu = new JBPopupMenu();
-//            jbPopupMenu.setPreferredSize(new Dimension(200, 200));
-//            jbPopupMenu.add("hahaha");
-//            this.add(jbPopupMenu, BorderLayout.CENTER);
         });
     }
 

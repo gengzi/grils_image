@@ -53,7 +53,7 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
             return;
         }
         File file = FileUtil.file(imgPath);
-        String parent = PathUtil.getParent(imgPath);
+        String parent = FileUtil.getParent(imgPath, 1);
         // 解析文件名称
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);
