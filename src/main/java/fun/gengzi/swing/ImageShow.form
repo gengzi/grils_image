@@ -52,16 +52,10 @@
         </clientProperties>
         <border type="none"/>
         <children>
-          <component id="d7b88" class="javax.swing.JButton" binding="amplifyButton">
+          <component id="41418" class="javax.swing.JLabel">
             <constraints/>
             <properties>
-              <text value="变大"/>
-            </properties>
-          </component>
-          <component id="9339f" class="javax.swing.JButton" binding="narrowButton">
-            <constraints/>
-            <properties>
-              <text value="变小"/>
+              <text value="imagetools"/>
             </properties>
           </component>
         </children>

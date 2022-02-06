@@ -136,13 +136,15 @@ public class AsciImagePanel extends JXPanel implements ImageFilePathProcess {
     @SneakyThrows
     @Override
     public void process(String imgPath) {
+        LOG.info("imgPath:" + imgPath);
         boolean blank = NotficationMsg.isBlank(imgPath);
         if (blank) {
             return;
         }
         this.imgPath = imgPath;
         File file = FileUtil.file(imgPath);
-        String parent = PathUtil.getParent(imgPath);
+        String parent = FileUtil.getParent(imgPath, 1);
+        LOG.info("parent:" + parent);
         // 解析文件名称
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);

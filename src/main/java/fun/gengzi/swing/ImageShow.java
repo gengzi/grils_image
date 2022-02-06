@@ -1,12 +1,15 @@
 package fun.gengzi.swing;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import com.intellij.codeInsight.preview.ImagePreviewComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.rt.debugger.ImageSerializer;
 import com.intellij.ui.components.JBTabbedPane;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
@@ -14,14 +17,19 @@ import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.intellij.images.editor.ImageDocument;
+import org.intellij.images.ui.ImageComponent;
 import org.jdesktop.swingx.JXPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * <h1> 图片展示 </h1>
@@ -35,8 +43,6 @@ public class ImageShow {
     private JPanel panel;
     // 主面板顶层面板
     private JPanel top;
-    private JButton amplifyButton;
-    private JButton narrowButton;
     private JPanel showJPanel;
     private JTextField pathTextField;
     private JPanel last;
@@ -157,6 +163,7 @@ public class ImageShow {
     /**
      * 初始化页面中的组件
      */
+    @SneakyThrows
     private void initLoadJComponent() {
         // 初始化img选项卡窗口，默认加载一张图
         imgTabbedPane = new JBTabbedPane();
@@ -164,6 +171,11 @@ public class ImageShow {
         ImageShowPanel imageShowPanel = new ImageShowPanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_IMAGESHOWPANEL), imageShowPanel);
         allTabbedPane.add(imageShowPanel);
+
+
+        Base64ImagePanel base64ImagePanel = new Base64ImagePanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_BASE64IMAGEPANEL), base64ImagePanel);
+        allTabbedPane.add(base64ImagePanel);
 
         AsciImagePanel asciImagePanel = new AsciImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_ASCIIMAGEPANEL), asciImagePanel);
@@ -176,10 +188,20 @@ public class ImageShow {
         pixelImagePanel = new PixelImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
+        VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File("C:\\Users\\Administrator\\Desktop\\wallhaven-e7rje8.jpg"));
+        DefaultImageEditorUI defaultImageEditorUI = new DefaultImageEditorUI(fileByIoFile);
+        imgTabbedPane.addTab("test", defaultImageEditorUI);
+        allTabbedPane.add(defaultImageEditorUI);
+
+        ImageDocument document = defaultImageEditorUI.getImageComponent().getDocument();
+        BufferedImage portraitImage = ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\wallhaven-e7rje8.jpg"));
+        document.setValue(portraitImage);
+
 //        // 美女图片
 //        grilsImagePanel = new GrilsImagePanel();
 //        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
 //        allTabbedPane.add(grilsImagePanel);
+
 
         showJPanel.add(imgTabbedPane);
     }

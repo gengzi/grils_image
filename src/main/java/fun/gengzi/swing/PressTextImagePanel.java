@@ -50,7 +50,7 @@ public class PressTextImagePanel extends JXPanel implements ImageFilePathProcess
             return;
         }
         File file = FileUtil.file(imgPath);
-        String parent = PathUtil.getParent(imgPath);
+        String parent = FileUtil.getParent(imgPath, 1);
         // 解析文件名称
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);

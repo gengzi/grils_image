@@ -27,7 +27,7 @@ public class IconButtonUtils {
         button.setForeground(new Color(0, 0, 0, 255));
         button.setAlignmentX((float) 0.5);
         button.setAlignmentY((float) 0.5);
-        button.setMaximumSize(new Dimension(32767,32767));
+        button.setMaximumSize(new Dimension(32767, 32767));
         // 边框不被绘制
         button.setBorderPainted(false);
         button.setOpaque(false);

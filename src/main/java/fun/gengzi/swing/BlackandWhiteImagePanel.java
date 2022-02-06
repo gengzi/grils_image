@@ -53,7 +53,7 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
             return;
         }
         File file = FileUtil.file(imgPath);
-        String parent = PathUtil.getParent(imgPath);
+        String parent = FileUtil.getParent(imgPath, 1);
         // 解析文件名称
         String name = FileNameUtil.mainName(file);
         String extName = FileNameUtil.extName(file);
@@ -62,8 +62,7 @@ public class BlackandWhiteImagePanel extends JXPanel implements ImageFilePathPro
         ImgUtil.gray(file, FileUtil.file(newImagePath));
         jxImageView.setImage(new File(newImagePath));
         jxImageView.setPreferredSize(new Dimension(this.jxPanel.getWidth(), this.jxPanel.getHeight()));
-        jxImageView.setMinimumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        jxImageView.updateUI();
+        jxImageView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         NotficationMsg.notifySaveImgMsg(newImagePath);
     }
 }

@@ -2,7 +2,7 @@
     <id>fun.gengzi.imagetools</id>
     <name>imagetools</name>
     <vendor email="1164014750@qq.com" url="https://github.com/gengzi">gengzi666</vendor>
-
+    <!-- 注释：必须英文    -->
     <description><![CDATA[
         Image processing tools to help developers use existing images to do some transformations.<br>
     <em>1.ASCII image conversion tool, you can adjust the font, size, font style and character set to generate an ASCII image</em>
@@ -14,19 +14,31 @@
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
+    <!-- 产品和插件兼容性要求，提供了一系列的模块，用于支持不同的插件功能  -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.platform.images</depends>
+
+    <!-- Minimum and maximum build version of IDE compatible with the plugin. -->
+    <!-- 最低构建版本和最高构建版本   -->
+    <!-- 内部编号范围：https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html-->
+    <!-- since-build 最低插件版本，until-build 最高插件版本，可以查看上述的内部编号。上传插件后，JetBrains 会自动检测兼容的插件   -->
+    <idea-version since-build="201.6668" until-build="213.*"/>
 
 
-    <idea-version since-build="201.6668"/>
-
+    <!-- Custom extensions declaration. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extensions.html#declaring-extensions -->
+    <!-- 自定义扩展声明   -->
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!-- 窗体 (IDEA 界面右侧) -->
-        <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/like.svg" factoryClass="fun.gengzi.ImageMain"/>
+        <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/like.svg"
+                    factoryClass="fun.gengzi.ImageMain"/>
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
-
+<!--&lt;!&ndash;          暂时移除这个action&ndash;&gt;-->
+<!--                &lt;!&ndash;Add your actions here &ndash;&gt;-->
+<!--                <action id="uigd.EncodeImageBase64" class="fun.gengzi.action.Base64AnAction" icon="/icons/like.svg" text="Encode with Base64" description="Encode current image with base64">-->
+<!--                    <add-to-group group-id="Images.EditorToolbar" anchor="last"/>-->
+<!--                </action>-->
     </actions>
 </idea-plugin>
