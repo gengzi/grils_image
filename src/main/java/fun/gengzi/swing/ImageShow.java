@@ -188,21 +188,10 @@ public class ImageShow {
         pixelImagePanel = new PixelImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
-        VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File("C:\\Users\\Administrator\\Desktop\\wallhaven-e7rje8.jpg"));
-        DefaultImageEditorUI defaultImageEditorUI = new DefaultImageEditorUI(fileByIoFile);
-        imgTabbedPane.addTab("test", defaultImageEditorUI);
-        allTabbedPane.add(defaultImageEditorUI);
-
-        ImageDocument document = defaultImageEditorUI.getImageComponent().getDocument();
-        BufferedImage portraitImage = ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\wallhaven-e7rje8.jpg"));
-        document.setValue(portraitImage);
-
 //        // 美女图片
 //        grilsImagePanel = new GrilsImagePanel();
 //        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
 //        allTabbedPane.add(grilsImagePanel);
-
-
         showJPanel.add(imgTabbedPane);
     }
 }
