@@ -6,6 +6,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -24,9 +27,11 @@ import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import fun.gengzi.utils.UiRefreshThreadUtils;
+import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXButton;
+import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 
 import javax.imageio.ImageIO;
@@ -59,6 +64,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
     private JXPanel lastPanel;
     private JXPanel topPanel;
     private JXPanel editorPanel;
+    private JXLabel copyLabel;
     private static final Logger LOG = Logger.getInstance(Base64ImagePanel.class);
     private static final int BLACK = new Color(0, 0, 0).getRGB();
     private static final int WHITE = new Color(232, 229, 229).getRGB();
@@ -95,10 +101,12 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
     private void initCompant() throws IOException {
         // 顶部panel
         topPanel = new JXPanel(new FlowLayout(FlowLayout.LEADING));
+        copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_COPYLABEL_TEXT));
         imgTypeComboBox = new ComboBox(IMAGE_TYPE.toArray(arr));
         imgTypeComboBox.setSelectedIndex(0);
         imageTypeTextField = new JBTextField();
         imageTypeTextField.setText(tobase64ImageTypeStr(imgTypeComboBox.getSelectedItem().toString()));
+        topPanel.add(copyLabel);
         topPanel.add(imgTypeComboBox);
         topPanel.add(imageTypeTextField);
         topPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -127,9 +135,10 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         saveAsButton = new JXButton();
         saveAsButton.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEASBUTTON_TEXT));
         toBase64Button.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT));
-        lastPanel.setLayout(new BorderLayout());
-        lastPanel.add(toBase64Button, BorderLayout.LINE_START);
-        lastPanel.add(saveAsButton, BorderLayout.CENTER);
+        lastPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        lastPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        lastPanel.add(toBase64Button);
+        lastPanel.add(saveAsButton);
         // 总布局
         this.add(topPanel, BorderLayout.PAGE_START);
         this.add(editorPanel, BorderLayout.CENTER);
@@ -154,19 +163,27 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             VirtualFile virtualFile = FileChooser.chooseFile(chooserDescriptor, openProjects, null);
             String content = base64Editor.getText();
             if (virtualFile == null || StrUtil.isBlank(content)) {
-                NotficationMsg.notifyErrorMsg(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT));
-                return;
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        NotficationMsg.notifyErrorMsg(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT));
+                        return;
+                    }
+                });
+
             }
             // 路径
+            ImgEntity img = getImg(content);
             String destPath = virtualFile.getPath();
             String fileName = FileNameExtendEnum.BASE64_EXTEND.getFileName();
-            String pngName = String.format(fileName, RandomUtil.randomLong(), "PNG");
-            BufferedImage img = getImg(content);
+            String pngName = String.format(fileName, System.currentTimeMillis(), img.getImgType());
+            String filePath = destPath + File.separator + pngName;
             try {
-                ImageIO.write(img, "png", new File(destPath + File.separator + pngName));
+                ImageIO.write(img.getImage(), img.getImgType(), new File(filePath));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+            NotficationMsg.notifySaveImgMsg(String.format(I18nBundle.message(I18nBundle.Key.NOTFICATIONMSG_SAVE_CONTENT), filePath));
         });
         imgTypeComboBox.addActionListener(e -> {
             // 获取现在选择的选项
@@ -176,25 +193,39 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
 
         toBase64Button.addActionListener(e -> {
             String content = base64Editor.getText();
-            BufferedImage img = getImg(content);
-            jxImageView.showImage(img);
+            ImgEntity img = getImg(content);
+            jxImageView.showImage(img.getImage(), img.getImgType());
         });
     }
 
-    private BufferedImage getImg(String base64Content) {
+    private ImgEntity getImg(String base64Content) {
         if (StrUtil.isBlank(base64Content)) {
             return null;
         }
+        ImgEntity imgEntity = new ImgEntity();
         if (base64Content.startsWith("data:image/")) {
-            String x = ";base64,";
+            String baseSplitStr = ";base64,";
             // base64 转 image
             // data:image/[imageType];base64,
-            String[] split = base64Content.split(x);
+            String[] split = base64Content.split(baseSplitStr);
             String imgtype = split[0].replace("data:image/", "");
-            return ImgUtil.toImage(split[split.length - 1]);
+            imgEntity.setImgType(imgtype);
+            imgEntity.setImage(ImgUtil.toImage(split[split.length - 1]));
+            return imgEntity;
         } else {
-            return ImgUtil.toImage(base64Content);
+            imgEntity.setImgType("png");
+            imgEntity.setImage(ImgUtil.toImage(base64Content));
+            return imgEntity;
         }
+    }
+
+
+    @Data
+    private static final class ImgEntity {
+        // 图片类型
+        private String imgType;
+        // 图片样式
+        private BufferedImage image;
     }
 
 

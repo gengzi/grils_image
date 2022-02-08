@@ -202,9 +202,11 @@ public class DefaultImageEditorUI extends JPanel implements DataProvider, ImageC
      * @param image {@link BufferedImage} 虚拟文件
      */
     @SneakyThrows
-    public void showImage(BufferedImage image) {
+    public void showImage(BufferedImage image,String imgType) {
         // 设置图片资源
         imageComponent.getDocument().setValue(image);
+        // 设置图片格式
+        imageComponent.getDocument().setFormat(imgType);
     }
 
 

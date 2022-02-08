@@ -49,6 +49,8 @@ public class I18nBundle extends AbstractBundle {
         BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT("base64imagepanel.tobase64button.text"),
         BASE64IMAGEPANEL_SAVEASBUTTON_TEXT("base64imagepanel.saveAsButton.text"),
         BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT("base64imagepanel.saveAs.error.text"),
+        BASE64IMAGEPANEL_COPYLABEL_TEXT("base64imagepanel.copyLabel.text"),
+
 
         ASCIIMAGEPANEL_FONTSTYLELABEL_TEXT("asciimagepanel.fontStyleLabel.text"),
         ASCIIMAGEPANEL_SIZELABEL_TEXT("asciimagepanel.sizeLabel.text"),
