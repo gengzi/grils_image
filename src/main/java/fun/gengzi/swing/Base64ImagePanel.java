@@ -16,7 +16,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.*;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -39,6 +41,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 
@@ -114,6 +117,9 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(2, 1);
         editorPanel = new JXPanel(gridLayoutManager);
         base64Editor = new JBTextArea(50, 50);
+        base64Editor.setFont(new Font("Consolas", Font.PLAIN, 5));
+        base64Editor.setLineWrap(true);
+        base64Editor.setWrapStyleWord(true);
         base64Editor.setSize(new Dimension(500, this.getHeight()));
         jbScrollPane = new JBScrollPane(base64Editor);
         jxImageView = new DefaultImageEditorUI(null);
@@ -129,6 +135,11 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         gridConstraints1.setFill(GridConstraints.FILL_BOTH);
         editorPanel.add(jxImageView, gridConstraints1);
         jxImageView.setBorder(new LineBorder(new Color(0, 0, 0)));
+        URL pictureUrl = getClass().getResource("/icons/image-text.png");
+        VirtualFile picture = VirtualFileManager.getInstance().findFileByUrl(VfsUtil.convertFromUrl(pictureUrl));
+        if(picture != null){
+            jxImageView.showImage(picture);
+        }
         // 尾部
         lastPanel = new JXPanel();
         toBase64Button = new JXButton();
@@ -163,14 +174,8 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             VirtualFile virtualFile = FileChooser.chooseFile(chooserDescriptor, openProjects, null);
             String content = base64Editor.getText();
             if (virtualFile == null || StrUtil.isBlank(content)) {
-                ApplicationManager.getApplication().invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        NotficationMsg.notifyErrorMsg(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT));
-                        return;
-                    }
-                });
-
+                ApplicationManager.getApplication().invokeLater(() -> NotficationMsg.notifyErrorMsg(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT)));
+                return;
             }
             // 路径
             ImgEntity img = getImg(content);
@@ -183,7 +188,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-            NotficationMsg.notifySaveImgMsg(String.format(I18nBundle.message(I18nBundle.Key.NOTFICATIONMSG_SAVE_CONTENT), filePath));
+            ApplicationManager.getApplication().invokeLater(() -> NotficationMsg.notifySaveImgMsg(filePath));
         });
         imgTypeComboBox.addActionListener(e -> {
             // 获取现在选择的选项
@@ -192,9 +197,13 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         });
 
         toBase64Button.addActionListener(e -> {
-            String content = base64Editor.getText();
-            ImgEntity img = getImg(content);
-            jxImageView.showImage(img.getImage(), img.getImgType());
+            ApplicationManager.getApplication().invokeLater(() -> {
+                String content = base64Editor.getText();
+                ImgEntity img = getImg(content);
+                jxImageView.showImage(img.getImage(), img.getImgType());
+                jxImageView.updateUI();
+            });
+
         });
     }
 
