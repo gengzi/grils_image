@@ -5,12 +5,23 @@
     <!-- 注释：必须英文    -->
     <description><![CDATA[
         Image processing tools to help developers use existing images to do some transformations.<br>
-    <em>1.ASCII image conversion tool, you can adjust the font, size, font style and character set to generate an ASCII image</em>
+    <em>1.Base64 image conversion tool, provide base64 character and image conversion</em>
     <br>
-    <em>2.Pixel image conversion tool, now only supports adjusting pixel threshold 0~255</em>
+    <em>2.ASCII image conversion tool, you can adjust the font, size, font style and character set to generate an ASCII image</em>
     <br>
-    <em>3.Gray Image Conversion tool</em>
+    <em>3.Pixel image conversion tool, now only supports adjusting pixel threshold 0~255</em>
+    <br>
+    <em>4.Gray Image Conversion tool</em>
     ]]></description>
+
+
+    <change-notes><![CDATA[
+      <h3>V1.0.1</h3>
+      <ul>
+          <li>Added base64 character and image conversion</li>
+      </ul>
+       ]]>
+    </change-notes>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -22,7 +33,7 @@
     <!-- 最低构建版本和最高构建版本   -->
     <!-- 内部编号范围：https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html-->
     <!-- since-build 最低插件版本，until-build 最高插件版本，可以查看上述的内部编号。上传插件后，JetBrains 会自动检测兼容的插件   -->
-    <idea-version since-build="201.6668" until-build="203.*"/>
+    <idea-version since-build="201.6668" until-build="202.*"/>
 
 
     <!-- Custom extensions declaration. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extensions.html#declaring-extensions -->
