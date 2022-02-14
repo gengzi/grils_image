@@ -37,6 +37,7 @@ import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -115,6 +116,8 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         topPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         // 中部
         GridLayoutManager gridLayoutManager = new GridLayoutManager(2, 1);
+        // 设置相同的行高
+        gridLayoutManager.setSameSizeVertically(true);
         editorPanel = new JXPanel(gridLayoutManager);
         base64Editor = new JBTextArea(50, 50);
         base64Editor.setFont(new Font("Consolas", Font.PLAIN, 5));
