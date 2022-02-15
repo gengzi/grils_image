@@ -52,7 +52,7 @@
         </clientProperties>
         <border type="none"/>
         <children>
-          <component id="41418" class="javax.swing.JLabel">
+          <component id="41418" class="javax.swing.JLabel" binding="tipsJlabel">
             <constraints/>
             <properties>
               <text value="imagetools"/>

@@ -95,7 +95,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     }
 
 
-    private void initCompant() throws IOException {
+    private void initCompant() {
         // 顶部panel
         topPanel = new JXPanel(new FlowLayout(FlowLayout.LEADING));
         copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_COPYLABEL_TEXT));
@@ -113,7 +113,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         gridLayoutManager.setSameSizeVertically(true);
         editorPanel = new JXPanel(gridLayoutManager);
         base64Editor = new JBTextArea(50, 50);
-        base64Editor.setFont(new Font("Consolas", Font.PLAIN, 5));
+        base64Editor.setFont(new Font("Consolas", Font.PLAIN, 12));
         base64Editor.setLineWrap(true);
         base64Editor.setWrapStyleWord(true);
         base64Editor.setSize(new Dimension(500, this.getHeight()));
@@ -133,7 +133,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         jxImageView.setBorder(new LineBorder(new Color(0, 0, 0)));
         URL pictureUrl = getClass().getResource("/icons/image-text.png");
         VirtualFile picture = VirtualFileManager.getInstance().findFileByUrl(VfsUtil.convertFromUrl(pictureUrl));
-        if(picture != null){
+        if (picture != null) {
             jxImageView.showImage(picture);
         }
         // 尾部

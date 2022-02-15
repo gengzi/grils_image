@@ -1,6 +1,7 @@
 package fun.gengzi.swing;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import cn.hutool.core.date.DateUtil;
 import com.intellij.codeInsight.preview.ImagePreviewComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -30,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Calendar;
 
 /**
  * <h1> 图片展示 </h1>
@@ -48,6 +50,7 @@ public class ImageShow {
     private JPanel last;
     private JLabel path;
     private JButton viewButton;
+    private JLabel tipsJlabel;
 
     // 随机图片面板
 //    private GrilsImagePanel grilsImagePanel;
@@ -56,6 +59,8 @@ public class ImageShow {
     private JTabbedPane imgTabbedPane;
 
     private PixelImagePanel pixelImagePanel;
+
+    int i = 1;
 
     // 日志
     private static final Logger LOG = Logger.getInstance(ImageShow.class);
@@ -70,6 +75,19 @@ public class ImageShow {
         // 添加监听器
         addAllListener();
 
+
+        Timer timer = new Timer(3000, new TimerListener());
+        timer.start();
+
+    }
+
+    class TimerListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            i++;
+            tipsJlabel.setText("测试dsddd"+i);
+        }
     }
 
 
@@ -188,6 +206,14 @@ public class ImageShow {
         pixelImagePanel = new PixelImagePanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
+
+        QRCodeImagePanel qrCodeImagePanel = new QRCodeImagePanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_BASE64IMAGEPANEL), qrCodeImagePanel);
+        allTabbedPane.add(qrCodeImagePanel);
+
+
+
+
 //        // 美女图片
 //        grilsImagePanel = new GrilsImagePanel();
 //        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_GRILSIMAGEPANEL), grilsImagePanel);
