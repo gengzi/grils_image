@@ -46,6 +46,7 @@ public class I18nBundle extends AbstractBundle {
         IMGTABBEDPANE_TAB_PIXELIMAGEPANEL("imgtabbedpane.tab.pixelimagepanel"),
         IMGTABBEDPANE_TAB_IMAGESHOWPANEL("imgtabbedpane.tab.imageshowpanel"),
         IMGTABBEDPANE_TAB_BASE64IMAGEPANEL("imgtabbedpane.tab.base64imagepanel"),
+        IMGTABBEDPANE_TAB_QRCODEIMAGEPANEL("imgtabbedpane.tab.qrcodeimagepanel"),
         BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT("base64imagepanel.tobase64button.text"),
         BASE64IMAGEPANEL_SAVEASBUTTON_TEXT("base64imagepanel.saveAsButton.text"),
         BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT("base64imagepanel.saveAs.error.text"),

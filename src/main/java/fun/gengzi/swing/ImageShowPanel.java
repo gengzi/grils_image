@@ -3,6 +3,7 @@ package fun.gengzi.swing;
 
 import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.imgeservice.ImagePanelHint;
 import fun.gengzi.message.NotficationMsg;
 import lombok.SneakyThrows;
 import org.jdesktop.swingx.JXImageView;
@@ -11,6 +12,10 @@ import org.jdesktop.swingx.JXPanel;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -19,9 +24,14 @@ import java.net.URL;
  * @author gengzi
  * @date 2022年2月2日12:58:17
  */
-public class ImageShowPanel extends JXPanel implements ImageFilePathProcess {
+public class ImageShowPanel extends JXPanel implements ImageFilePathProcess, ImagePanelHint {
     private final JXImageView jxImageView;
     private final JXPanel jxPanel;
+
+    private static final String hits[] = {
+            "imagetools", "imagetools go"
+    };
+
 
     /**
      * 初始化面板
@@ -53,5 +63,10 @@ public class ImageShowPanel extends JXPanel implements ImageFilePathProcess {
         jxImageView.setPreferredSize(new Dimension(this.jxPanel.getWidth(), this.jxPanel.getHeight()));
         jxImageView.setMinimumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         jxImageView.updateUI();
+    }
+
+    @Override
+    public List gethints() {
+        return Arrays.stream(hits).collect(Collectors.toList());
     }
 }

@@ -14,6 +14,8 @@ import com.intellij.rt.debugger.ImageSerializer;
 import com.intellij.ui.components.JBTabbedPane;
 import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.imgeservice.ImagePanelHint;
+import fun.gengzi.listener.ScrollingPromptListener;
 import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import lombok.Getter;
@@ -57,11 +59,13 @@ public class ImageShow {
 
     // img 选项卡窗口
     private JTabbedPane imgTabbedPane;
-
     private PixelImagePanel pixelImagePanel;
-
-    int i = 1;
-
+    // 二维码面板
+    private QRCodeImagePanel qrCodeImagePanel;
+    // 预览面板
+    private ImageShowPanel imageShowPanel;
+    // 面板提示语滚动条
+    private ScrollingPromptListener scrollingPromptListener;
     // 日志
     private static final Logger LOG = Logger.getInstance(ImageShow.class);
 
@@ -76,19 +80,14 @@ public class ImageShow {
         initLoadJComponent();
         // 添加监听器
         addAllListener();
-
-
-        Timer timer = new Timer(3000, new TimerListener());
-        timer.start();
-
+        // 添加定时任务
+        addTimerTask();
     }
 
-    class TimerListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            i++;
-            tipsJlabel.setText(arr[i%2]);
-        }
+    private void addTimerTask() {
+        scrollingPromptListener = new ScrollingPromptListener(tipsJlabel, imageShowPanel.gethints());
+        Timer timer = new Timer(5000, scrollingPromptListener);
+        timer.start();
     }
 
 
@@ -117,6 +116,12 @@ public class ImageShow {
                 JBTabbedPane source = (JBTabbedPane) e.getSource();
                 // 获取选中的component
                 Component selectedComponent = source.getSelectedComponent();
+                if (selectedComponent instanceof ImagePanelHint) {
+                    ImagePanelHint hint = (ImagePanelHint) selectedComponent;
+                    scrollingPromptListener.setHits(hint.gethints());
+                }
+
+
                 if (selectedComponent instanceof ImageFilePathProcess) {
                     ImageFilePathProcess pathProcess = (ImageFilePathProcess) selectedComponent;
                     pathProcess.process(imgPath);
@@ -187,7 +192,7 @@ public class ImageShow {
         // 初始化img选项卡窗口，默认加载一张图
         imgTabbedPane = new JBTabbedPane();
         // 添加各个面板
-        ImageShowPanel imageShowPanel = new ImageShowPanel();
+        imageShowPanel = new ImageShowPanel();
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_IMAGESHOWPANEL), imageShowPanel);
         allTabbedPane.add(imageShowPanel);
 
@@ -208,11 +213,9 @@ public class ImageShow {
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_PIXELIMAGEPANEL), pixelImagePanel);
         allTabbedPane.add(pixelImagePanel);
 
-        QRCodeImagePanel qrCodeImagePanel = new QRCodeImagePanel();
-        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_BASE64IMAGEPANEL), qrCodeImagePanel);
+        qrCodeImagePanel = new QRCodeImagePanel();
+        imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_QRCODEIMAGEPANEL), qrCodeImagePanel);
         allTabbedPane.add(qrCodeImagePanel);
-
-
 
 
 //        // 美女图片

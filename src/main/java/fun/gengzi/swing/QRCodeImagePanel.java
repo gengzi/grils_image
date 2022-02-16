@@ -53,20 +53,17 @@ import java.util.List;
  */
 @Getter
 public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
+    private static final Logger LOG = Logger.getInstance(QRCodeImagePanel.class);
     // 默认的图片UI
     private DefaultImageEditorUI jxImageView;
     private JXPanel jxPanel;
-    private JBTextArea base64Editor;
+    private JBTextArea qrCodeEditor;
     private JBScrollPane jbScrollPane;
     private JXPanel lastPanel;
     private JXPanel topPanel;
     private JXPanel editorPanel;
     private JXLabel copyLabel;
-    private static final Logger LOG = Logger.getInstance(QRCodeImagePanel.class);
-    private static final int BLACK = new Color(0, 0, 0).getRGB();
-    private static final int WHITE = new Color(232, 229, 229).getRGB();
-    private double SW = 192;
-    private JXButton toBase64Button;
+    private JXButton toQRcodeButton;
     private JXButton saveAsButton;
     private String imgPath;
     private Runnable runnable;
@@ -76,11 +73,17 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     private static final List<String> IMAGE_TYPE = ContainerUtil.immutableList("png", "ico", "bmp", "gif", "jpg", "svg");
     private String[] arr = {};
 
+    // 默认的字符类型
+    private Font defaultfont;
+
+
     /**
      * 初始化面板
      */
     @SneakyThrows
     public QRCodeImagePanel() {
+        String fontName = this.getFont().getFontName();
+        defaultfont = new Font(fontName, Font.PLAIN, 12);
         this.jxPanel = this;
         this.setLayout(new BorderLayout());
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -112,12 +115,12 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         // 设置相同的行高
         gridLayoutManager.setSameSizeVertically(true);
         editorPanel = new JXPanel(gridLayoutManager);
-        base64Editor = new JBTextArea(50, 50);
-        base64Editor.setFont(new Font("Consolas", Font.PLAIN, 12));
-        base64Editor.setLineWrap(true);
-        base64Editor.setWrapStyleWord(true);
-        base64Editor.setSize(new Dimension(500, this.getHeight()));
-        jbScrollPane = new JBScrollPane(base64Editor);
+        qrCodeEditor = new JBTextArea(50, 50);
+        qrCodeEditor.setFont(defaultfont);
+        qrCodeEditor.setLineWrap(true);
+        qrCodeEditor.setWrapStyleWord(true);
+        qrCodeEditor.setSize(new Dimension(500, this.getHeight()));
+        jbScrollPane = new JBScrollPane(qrCodeEditor);
         jxImageView = new DefaultImageEditorUI(null);
         GridConstraints gridConstraints = new GridConstraints();
         gridConstraints.setRow(0);
@@ -138,13 +141,13 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         }
         // 尾部
         lastPanel = new JXPanel();
-        toBase64Button = new JXButton();
+        toQRcodeButton = new JXButton();
         saveAsButton = new JXButton();
         saveAsButton.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEASBUTTON_TEXT));
-        toBase64Button.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT));
+        toQRcodeButton.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT));
         lastPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         lastPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        lastPanel.add(toBase64Button);
+        lastPanel.add(toQRcodeButton);
         lastPanel.add(saveAsButton);
         // 总布局
         this.add(topPanel, BorderLayout.PAGE_START);
@@ -168,7 +171,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
             FileChooserDescriptor chooserDescriptor = new FileChooserDescriptor(false, true, false, false, false, false);
             Project openProjects = ProjectManager.getInstance().getDefaultProject();
             VirtualFile virtualFile = FileChooser.chooseFile(chooserDescriptor, openProjects, null);
-            String content = base64Editor.getText();
+            String content = qrCodeEditor.getText();
             if (virtualFile == null || StrUtil.isBlank(content)) {
                 ApplicationManager.getApplication().invokeLater(() -> NotficationMsg.notifyErrorMsg(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEAS_ERROR_TEXT)));
                 return;
@@ -192,9 +195,9 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
             imageTypeTextField.setText(tobase64ImageTypeStr(selectedItem));
         });
 
-        toBase64Button.addActionListener(e -> {
+        toQRcodeButton.addActionListener(e -> {
             ApplicationManager.getApplication().invokeLater(() -> {
-                String content = base64Editor.getText();
+                String content = qrCodeEditor.getText();
                 ImgEntity img = getImg(content);
                 jxImageView.showImage(img.getImage(), img.getImgType());
                 jxImageView.updateUI();
@@ -260,10 +263,10 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         BufferedImage src = ImageIO.read(file);
         String base64 = ImgUtil.toBase64DataUri(src, extName);
         System.out.println(base64);
-        base64Editor.setText(base64);
-        base64Editor.setFont(new Font("Consolas", Font.PLAIN, 5));
-        base64Editor.setLineWrap(true);
-        base64Editor.setWrapStyleWord(true);
+        qrCodeEditor.setText(base64);
+        qrCodeEditor.setFont(defaultfont);
+        qrCodeEditor.setLineWrap(true);
+        qrCodeEditor.setWrapStyleWord(true);
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(new File(imgPath));
         jxImageView.showImage(virtualFile);
         jxImageView.updateUI();
