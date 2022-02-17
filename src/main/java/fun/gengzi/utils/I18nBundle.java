@@ -64,6 +64,13 @@ public class I18nBundle extends AbstractBundle {
         HINTS_IMAGESHOWPANEL_TEXT_2("hints_ImageShowPanel_text_2"),
         HINTS_BASE64IMAGEPANEL_TEXT_1("hints_Base64ImagePanel_text_1"),
 
+
+        QRCODEIMAGEPANEL_TOQRCODEBUTTON_TEXT("qrcodeimagepanel_toQrcodebutton_text"),
+        QRCODEIMAGEPANEL_BASICLABEL_TEXT("qrcodeimagepanel_basicLabel_text"),
+        QRCODEIMAGEPANEL_SAVEASBUTTON_TEXT("qrcodeimagepanel_saveAsButton_text"),
+        QRCODEIMAGEPANEL_SAVEAS_ERROR_TEXT("qrcodeimagepanel_saveAs_error_text"),
+
+
         ASCIIMAGEPANEL_FONTLABEL_TEXT("asciimagepanel_fontLabel_text");
 
 
