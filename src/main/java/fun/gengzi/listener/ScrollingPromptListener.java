@@ -1,5 +1,6 @@
 package fun.gengzi.listener;
 
+import cn.hutool.core.lang.Assert;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,12 +21,14 @@ import java.util.List;
 @Setter
 public class ScrollingPromptListener implements ActionListener {
 
+    // 展示文本的组件
     private JLabel jLabel;
 
+    // 文本集合
     private List hits;
 
     // 控制第几条
-    private int index = 1;
+    private volatile int index = 1;
 
     /**
      * 构造方法
@@ -38,8 +41,24 @@ public class ScrollingPromptListener implements ActionListener {
         this.hits = hits;
     }
 
+    public void setHits(List hits) {
+        this.hits = hits;
+        // 每次重新set hits ，就重置 index 的值
+        index = 1;
+    }
+
+    /**
+     * 顺序展示滚动文本
+     * <p>
+     * 滚动原理，通过%集合长度求余数的方式，得到集合下标，获取文本。集合下标的范围肯定在[0，size-1] 之间
+     * 执行一次，让除数增加1，直到除数与size 一致，重置为除数为1 ，控制循环下一条文本
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
+        Assert.notNull(hits, () -> new IllegalArgumentException("hits is null"));
+        Assert.notNull(jLabel, () -> new IllegalArgumentException("jLabel is null"));
         int size = hits.size();
         jLabel.setText(hits.get(index % size).toString());
         if (size >= index) {

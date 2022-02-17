@@ -2,6 +2,7 @@ package fun.gengzi.swing;
 
 
 import fun.gengzi.constant.GlobalConstant;
+import fun.gengzi.constant.ImagePanelTipsConstant;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.imgeservice.ImagePanelHint;
 import fun.gengzi.message.NotficationMsg;
@@ -27,10 +28,6 @@ import java.util.stream.Collectors;
 public class ImageShowPanel extends JXPanel implements ImageFilePathProcess, ImagePanelHint {
     private final JXImageView jxImageView;
     private final JXPanel jxPanel;
-
-    private static final String hits[] = {
-            "imagetools", "imagetools go"
-    };
 
 
     /**
@@ -67,6 +64,6 @@ public class ImageShowPanel extends JXPanel implements ImageFilePathProcess, Ima
 
     @Override
     public List gethints() {
-        return Arrays.stream(hits).collect(Collectors.toList());
+        return Arrays.stream(ImagePanelTipsConstant.IMAGESHOWPANEL).collect(Collectors.toList());
     }
 }
