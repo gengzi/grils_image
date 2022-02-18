@@ -70,6 +70,10 @@ public class I18nBundle extends AbstractBundle {
         QRCODEIMAGEPANEL_SAVEASBUTTON_TEXT("qrcodeimagepanel_saveAsButton_text"),
         QRCODEIMAGEPANEL_SAVEAS_ERROR_TEXT("qrcodeimagepanel_saveAs_error_text"),
 
+        QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_HIGH("qrcodeimagepanel_errorcorrectionoptions_high"),
+        QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_MEDIUM("qrcodeimagepanel_errorcorrectionoptions_medium"),
+        QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOW("qrcodeimagepanel_errorcorrectionoptions_Low"),
+        QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOWEST("qrcodeimagepanel_errorcorrectionoptions_lowest"),
 
         ASCIIMAGEPANEL_FONTLABEL_TEXT("asciimagepanel_fontLabel_text");
 

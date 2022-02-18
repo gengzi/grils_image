@@ -4,6 +4,7 @@ package fun.gengzi.swing;
 import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -42,7 +43,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -68,6 +71,8 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     private String imgPath;
     private Runnable runnable;
     private ComboBox<String> imgTypeComboBox;
+    private ComboBox<String> errorCorrectionOptionsComboBox;
+    private ComboBox sizeComboBox;
     private JBTextField imageTypeTextField;
     // 支持的图片格式
     private static final List<String> IMAGE_TYPE = ContainerUtil.immutableList("png", "ico", "bmp", "gif", "jpg", "svg");
@@ -76,6 +81,16 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     // 默认的字符类型
     private Font defaultfont;
 
+    // 基本-纠错 选项数据
+    private static final List<String> errorCorrectionOptions = ContainerUtil.immutableList(
+            I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_HIGH),
+            I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_MEDIUM),
+            I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOW),
+            I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOWEST)
+    );
+
+
+    private static final int[] SIZEVALUES = ArrayUtil.range(10, 1, 1);
 
     /**
      * 初始化面板
@@ -101,13 +116,23 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     private void initCompant() {
         // 顶部panel
         topPanel = new JXPanel(new FlowLayout(FlowLayout.LEADING));
-        copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_COPYLABEL_TEXT));
+        copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_BASICLABEL_TEXT));
+        // 纠错能力
+        errorCorrectionOptionsComboBox = new ComboBox(errorCorrectionOptions.toArray(arr));
+        errorCorrectionOptionsComboBox.setSelectedIndex(0);
+        // 尺寸
+        Integer[] objects = (Integer[]) Arrays.stream(SIZEVALUES).mapToObj(Integer::valueOf).collect(Collectors.toList()).toArray();
+
+        sizeComboBox = new ComboBox(objects);
+        sizeComboBox.setSelectedIndex(0);
+
         imgTypeComboBox = new ComboBox(IMAGE_TYPE.toArray(arr));
         imgTypeComboBox.setSelectedIndex(0);
         imageTypeTextField = new JBTextField();
         imageTypeTextField.setText(tobase64ImageTypeStr(imgTypeComboBox.getSelectedItem().toString()));
         topPanel.add(copyLabel);
         topPanel.add(imgTypeComboBox);
+        topPanel.add(sizeComboBox);
         topPanel.add(imageTypeTextField);
         topPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         // 中部
