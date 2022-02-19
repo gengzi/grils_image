@@ -24,8 +24,10 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.containers.ContainerUtil;
 import fun.gengzi.constant.GlobalConstant;
+import fun.gengzi.constant.ImagePanelTipsConstant;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
+import fun.gengzi.imgeservice.ImagePanelHint;
 import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import fun.gengzi.utils.UiRefreshThreadUtils;
@@ -43,7 +45,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -59,7 +63,7 @@ import java.util.List;
  * @date 2022年2月4日15:32:13
  */
 @Getter
-public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
+public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess, ImagePanelHint {
     // 默认的图片UI
     private DefaultImageEditorUI jxImageView;
     private JXPanel jxPanel;
@@ -140,7 +144,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
         jxImageView.setBorder(new LineBorder(new Color(0, 0, 0)));
         URL pictureUrl = getClass().getResource("/icons/image-text.png");
         VirtualFile picture = VirtualFileManager.getInstance().findFileByUrl(VfsUtil.convertFromUrl(pictureUrl));
-        if(picture != null){
+        if (picture != null) {
             jxImageView.showImage(picture);
         }
         // 尾部
@@ -229,6 +233,16 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess {
             imgEntity.setImage(ImgUtil.toImage(base64Content));
             return imgEntity;
         }
+    }
+
+    /**
+     * 获取提示语集合
+     *
+     * @return {@link List}
+     */
+    @Override
+    public List gethints() {
+        return Arrays.stream(ImagePanelTipsConstant.Base64ImagePanel).collect(Collectors.toList());
     }
 
 

@@ -107,12 +107,6 @@ public class ImageShow {
             @SneakyThrows
             @Override
             public void stateChanged(ChangeEvent e) {
-                // 获取图片路径
-                String imgPath = pathTextField.getText();
-                boolean blank = NotficationMsg.isBlank(imgPath);
-                if (blank) {
-                    return;
-                }
                 JBTabbedPane source = (JBTabbedPane) e.getSource();
                 // 获取选中的component
                 Component selectedComponent = source.getSelectedComponent();
@@ -120,8 +114,12 @@ public class ImageShow {
                     ImagePanelHint hint = (ImagePanelHint) selectedComponent;
                     scrollingPromptListener.setHits(hint.gethints());
                 }
-
-
+                // 获取图片路径
+                String imgPath = pathTextField.getText();
+                boolean blank = NotficationMsg.isBlank(imgPath);
+                if (blank) {
+                    return;
+                }
                 if (selectedComponent instanceof ImageFilePathProcess) {
                     ImageFilePathProcess pathProcess = (ImageFilePathProcess) selectedComponent;
                     pathProcess.process(imgPath);
