@@ -19,6 +19,8 @@ public enum FileNameExtendEnum {
     ASCIIMG_EXTEND("%s_asciimg.%s"),
     // base64 图片
     BASE64_EXTEND("%s_base64.%s"),
+    // base64 图片
+    QRCODE_EXTEND("%s_qrcode.%s"),
     // 像素照片
     PIXELIMG_EXTEND("%s_pixelimg.%s");
 

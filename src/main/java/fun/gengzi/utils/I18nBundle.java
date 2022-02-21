@@ -67,6 +67,8 @@ public class I18nBundle extends AbstractBundle {
 
         QRCODEIMAGEPANEL_TOQRCODEBUTTON_TEXT("qrcodeimagepanel_toQrcodebutton_text"),
         QRCODEIMAGEPANEL_BASICLABEL_TEXT("qrcodeimagepanel_basicLabel_text"),
+        QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_TEXT("qrcodeimagepanel_errorcorrectionoptions_text"),
+        QRCODEIMAGEPANEL_SIZE_TEXT("qrcodeimagepanel_size_text"),
         QRCODEIMAGEPANEL_SAVEASBUTTON_TEXT("qrcodeimagepanel_saveAsButton_text"),
         QRCODEIMAGEPANEL_SAVEAS_ERROR_TEXT("qrcodeimagepanel_saveAs_error_text"),
 

@@ -27,6 +27,9 @@ dependencies {
     implementation 'cn.hutool:hutool-all:5.7.19'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    // https://mvnrepository.com/artifact/com.google.zxing/core
+    implementation group: 'com.google.zxing', name: 'core', version: '3.4.1'
+
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

@@ -6,6 +6,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.qrcode.QrCodeUtil;
+import cn.hutool.extra.qrcode.QrConfig;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -37,13 +40,16 @@ import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,17 +69,20 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     private JBTextArea qrCodeEditor;
     private JBScrollPane jbScrollPane;
     private JXPanel lastPanel;
+    private JXPanel topPanelOne;
+    private JXPanel topPanelTwo;
+    private JXPanel topPanelThree;
     private JXPanel topPanel;
     private JXPanel editorPanel;
     private JXLabel copyLabel;
+    private JXLabel errorCorrectionOptionsLabel;
+    private JXLabel sizeLabel;
     private JXButton toQRcodeButton;
     private JXButton saveAsButton;
     private String imgPath;
     private Runnable runnable;
-    private ComboBox<String> imgTypeComboBox;
     private ComboBox<String> errorCorrectionOptionsComboBox;
-    private ComboBox sizeComboBox;
-    private JBTextField imageTypeTextField;
+    private ComboBox<Integer> sizeComboBox;
     // 支持的图片格式
     private static final List<String> IMAGE_TYPE = ContainerUtil.immutableList("png", "ico", "bmp", "gif", "jpg", "svg");
     private String[] arr = {};
@@ -90,7 +99,10 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     );
 
 
-    private static final int[] SIZEVALUES = ArrayUtil.range(10, 1, 1);
+    private static final int[] SIZEVALUES = ArrayUtil.range(1, 11, 1);
+
+
+    private static final List<Integer> SIZE_TYPE = new ArrayList<>();
 
     /**
      * 初始化面板
@@ -98,7 +110,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     @SneakyThrows
     public QRCodeImagePanel() {
         String fontName = this.getFont().getFontName();
-        defaultfont = new Font(fontName, Font.PLAIN, 12);
+        defaultfont = new Font(fontName, Font.PLAIN, 16);
         this.jxPanel = this;
         this.setLayout(new BorderLayout());
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -114,33 +126,21 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
 
 
     private void initCompant() {
-        // 顶部panel
-        topPanel = new JXPanel(new FlowLayout(FlowLayout.LEADING));
-        copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_BASICLABEL_TEXT));
-        // 纠错能力
-        errorCorrectionOptionsComboBox = new ComboBox(errorCorrectionOptions.toArray(arr));
-        errorCorrectionOptionsComboBox.setSelectedIndex(0);
-        // 尺寸
-        Integer[] objects = (Integer[]) Arrays.stream(SIZEVALUES).mapToObj(Integer::valueOf).collect(Collectors.toList()).toArray();
+        // 头部
+        topPanel = new JXPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        configPanelone();
+        configPaneltwo();
+        topPanel.add(topPanelOne);
+        topPanel.add(topPanelTwo);
 
-        sizeComboBox = new ComboBox(objects);
-        sizeComboBox.setSelectedIndex(0);
 
-        imgTypeComboBox = new ComboBox(IMAGE_TYPE.toArray(arr));
-        imgTypeComboBox.setSelectedIndex(0);
-        imageTypeTextField = new JBTextField();
-        imageTypeTextField.setText(tobase64ImageTypeStr(imgTypeComboBox.getSelectedItem().toString()));
-        topPanel.add(copyLabel);
-        topPanel.add(imgTypeComboBox);
-        topPanel.add(sizeComboBox);
-        topPanel.add(imageTypeTextField);
-        topPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         // 中部
         GridLayoutManager gridLayoutManager = new GridLayoutManager(2, 1);
         // 设置相同的行高
         gridLayoutManager.setSameSizeVertically(true);
         editorPanel = new JXPanel(gridLayoutManager);
-        qrCodeEditor = new JBTextArea(50, 50);
+        qrCodeEditor = new JBTextArea(40, 50);
         qrCodeEditor.setFont(defaultfont);
         qrCodeEditor.setLineWrap(true);
         qrCodeEditor.setWrapStyleWord(true);
@@ -168,8 +168,8 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         lastPanel = new JXPanel();
         toQRcodeButton = new JXButton();
         saveAsButton = new JXButton();
-        saveAsButton.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_SAVEASBUTTON_TEXT));
-        toQRcodeButton.setText(I18nBundle.message(I18nBundle.Key.BASE64IMAGEPANEL_TOBASE64BUTTON_TEXT));
+        saveAsButton.setText(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_SAVEASBUTTON_TEXT));
+        toQRcodeButton.setText(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_TOQRCODEBUTTON_TEXT));
         lastPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         lastPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         lastPanel.add(toQRcodeButton);
@@ -179,6 +179,46 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
         this.add(editorPanel, BorderLayout.CENTER);
         this.add(lastPanel, BorderLayout.PAGE_END);
 
+    }
+
+    /**
+     * 第一层配置
+     */
+    private void configPanelone() {
+        // 顶部panel
+        topPanelOne = new JXPanel(new FlowLayout(FlowLayout.LEADING));
+        copyLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_BASICLABEL_TEXT));
+
+        errorCorrectionOptionsLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_TEXT));
+        // 纠错能力
+        errorCorrectionOptionsComboBox = new ComboBox(errorCorrectionOptions.toArray(arr));
+        errorCorrectionOptionsComboBox.setSelectedIndex(0);
+        // 尺寸
+        Arrays.stream(SIZEVALUES).forEach(item -> {
+            SIZE_TYPE.add(Integer.valueOf(item));
+        });
+        // 倒序排列
+        sizeComboBox = new ComboBox(SIZE_TYPE.stream().sorted(Comparator.reverseOrder()).toArray());
+        sizeComboBox.setSelectedIndex(0);
+        // 大小
+        sizeLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_SIZE_TEXT));
+        topPanelOne.add(copyLabel);
+        topPanelOne.add(errorCorrectionOptionsLabel);
+        topPanelOne.add(errorCorrectionOptionsComboBox);
+        topPanelOne.add(sizeLabel);
+        topPanelOne.add(sizeComboBox);
+        topPanelOne.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+    }
+
+
+    /**
+     * 第一层配置
+     */
+    private void configPaneltwo() {
+        // 顶部panel
+        topPanelTwo = new JXPanel(new FlowLayout(FlowLayout.LEADING));
+        topPanelTwo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        topPanelTwo.add(new JXButton("test"));
     }
 
     /**
@@ -204,7 +244,7 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
             // 路径
             ImgEntity img = getImg(content);
             String destPath = virtualFile.getPath();
-            String fileName = FileNameExtendEnum.BASE64_EXTEND.getFileName();
+            String fileName = FileNameExtendEnum.QRCODE_EXTEND.getFileName();
             String pngName = String.format(fileName, System.currentTimeMillis(), img.getImgType());
             String filePath = destPath + File.separator + pngName;
             try {
@@ -214,11 +254,11 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
             }
             ApplicationManager.getApplication().invokeLater(() -> NotficationMsg.notifySaveImgMsg(filePath));
         });
-        imgTypeComboBox.addActionListener(e -> {
-            // 获取现在选择的选项
-            String selectedItem = (String) imgTypeComboBox.getSelectedItem();
-            imageTypeTextField.setText(tobase64ImageTypeStr(selectedItem));
-        });
+//        imgTypeComboBox.addActionListener(e -> {
+//            // 获取现在选择的选项
+//            String selectedItem = (String) imgTypeComboBox.getSelectedItem();
+//            imageTypeTextField.setText(tobase64ImageTypeStr(selectedItem));
+//        });
 
         toQRcodeButton.addActionListener(e -> {
             ApplicationManager.getApplication().invokeLater(() -> {
@@ -236,20 +276,14 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
             return null;
         }
         ImgEntity imgEntity = new ImgEntity();
-        if (base64Content.startsWith("data:image/")) {
-            String baseSplitStr = ";base64,";
-            // base64 转 image
-            // data:image/[imageType];base64,
-            String[] split = base64Content.split(baseSplitStr);
-            String imgtype = split[0].replace("data:image/", "");
-            imgEntity.setImgType(imgtype);
-            imgEntity.setImage(ImgUtil.toImage(split[split.length - 1]));
-            return imgEntity;
-        } else {
-            imgEntity.setImgType("png");
-            imgEntity.setImage(ImgUtil.toImage(base64Content));
-            return imgEntity;
-        }
+        QrConfig config = new QrConfig();
+        // 高纠错级别
+        config.setErrorCorrection(ErrorCorrectionLevel.H);
+        BufferedImage generate = QrCodeUtil.generate(base64Content, config);
+        imgEntity.setImgType("png");
+        imgEntity.setImage(generate);
+        return imgEntity;
+
     }
 
 
@@ -284,11 +318,8 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess {
     private void showImage() {
         File file = FileUtil.file(imgPath);
         // 解析文件名称
-        String extName = FileNameUtil.extName(file);
-        BufferedImage src = ImageIO.read(file);
-        String base64 = ImgUtil.toBase64DataUri(src, extName);
-        System.out.println(base64);
-        qrCodeEditor.setText(base64);
+        String decode = QrCodeUtil.decode(file);
+        qrCodeEditor.setText(decode);
         qrCodeEditor.setFont(defaultfont);
         qrCodeEditor.setLineWrap(true);
         qrCodeEditor.setWrapStyleWord(true);
