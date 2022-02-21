@@ -20,6 +20,10 @@
       <ul>
           <li>Added base64 character and image conversion</li>
       </ul>
+        <h3>V1.0.2</h3>
+      <ul>
+          <li>Added support for 2020.3 to 2021.3 versions</li>
+      </ul>
        ]]>
     </change-notes>
 
@@ -33,7 +37,7 @@
     <!-- 最低构建版本和最高构建版本   -->
     <!-- 内部编号范围：https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html-->
     <!-- since-build 最低插件版本，until-build 最高插件版本，可以查看上述的内部编号。上传插件后，JetBrains 会自动检测兼容的插件   -->
-    <idea-version since-build="201.6668" until-build="202.*"/>
+    <idea-version since-build="203" until-build="213.*"/>
 
 
     <!-- Custom extensions declaration. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extensions.html#declaring-extensions -->
@@ -43,6 +47,7 @@
         <!-- 窗体 (IDEA 界面右侧) -->
         <toolWindow id="ImageTools" secondary="false" anchor="right" icon="/icons/imagetools.svg"
                     factoryClass="fun.gengzi.ImageMain"/>
+        <notificationGroup id="imagetools" displayType="BALLOON" key="notification.group.name"/>
     </extensions>
 
     <actions>

@@ -4,7 +4,6 @@ package fun.gengzi.swing;
 import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
-import com.intellij.openapi.util.io.PathUtil;
 import fun.gengzi.enums.FileNameExtendEnum;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.message.NotficationMsg;

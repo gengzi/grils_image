@@ -6,7 +6,6 @@ import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.util.io.PathUtil;
 import com.intellij.ui.FontComboBox;
 import fun.gengzi.asciimg.image.AsciiImgCache;
 import fun.gengzi.asciimg.image.character_fit_strategy.ColorSquareErrorFitStrategy;

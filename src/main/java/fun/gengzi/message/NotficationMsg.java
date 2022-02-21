@@ -12,12 +12,17 @@ import fun.gengzi.utils.I18nBundle;
  */
 public class NotficationMsg {
 
-    private static final NotificationGroup NOTIFICATION_GROUP =
-            new NotificationGroup("imagePanel", NotificationDisplayType.BALLOON, true);
+//    private static final NotificationGroup NOTIFICATION_GROUP =
+//            new NotificationGroup("imagePanel", NotificationDisplayType.BALLOON, true);
+
+    // 2020.3 以上版本
+    private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroupManager.getInstance()
+            .getNotificationGroup("imagetools");
 
 
     /**
      * 路径是否为空
+     *
      * @param imgPath 图片路径
      * @return
      */
@@ -45,6 +50,7 @@ public class NotficationMsg {
 
     /**
      * 图片保存提示
+     *
      * @param imgPath 保存后的图片路径
      */
     public static void notifySaveImgMsg(String imgPath) {
@@ -60,6 +66,7 @@ public class NotficationMsg {
 
     /**
      * 图片选择提示
+     *
      * @param imgPath
      */
     public static void notifySelectImgMsg(String imgPath) {
