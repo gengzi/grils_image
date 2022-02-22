@@ -242,7 +242,7 @@ public class Base64ImagePanel extends JXPanel implements ImageFilePathProcess, I
      */
     @Override
     public List gethints() {
-        return Arrays.stream(ImagePanelTipsConstant.Base64ImagePanel).collect(Collectors.toList());
+        return Arrays.stream(ImagePanelTipsConstant.BASE64IMAGEPANEL).collect(Collectors.toList());
     }
 
 

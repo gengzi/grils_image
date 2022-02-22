@@ -19,9 +19,15 @@ public class ImagePanelTipsConstant {
     };
 
     // Base64 面板
-    public static final String Base64ImagePanel[] = {
+    public static final String BASE64IMAGEPANEL[] = {
             I18nBundle.message(I18nBundle.Key.HINTS_BASE64IMAGEPANEL_TEXT_1),
     };
 
+
+    // Base64 面板
+    public static final String QRCODEIMAGEPANEL[] = {
+            I18nBundle.message(I18nBundle.Key.HINTS_QRCODEIMAGEPANEL_TEXT_1),
+            I18nBundle.message(I18nBundle.Key.HINTS_QRCODEIMAGEPANEL_TEXT_2),
+    };
 
 }
