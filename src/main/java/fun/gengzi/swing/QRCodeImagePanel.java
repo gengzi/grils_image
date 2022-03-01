@@ -86,7 +86,13 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
     private Runnable runnable;
     private ComboBox<String> errorCorrectionOptionsComboBox;
     private ComboBox<Integer> sizeComboBox;
+    // 前景色-取色器
+    private JXColorSelectionButton frontJxColorSelectionButton;
+    // 背景色-取色器
+    private JXColorSelectionButton backJxColorSelectionButton;
     private JXLabel colorLabel;
+    private JXLabel forntColorLabel;
+    private JXLabel backColorLabel;
     private static final int BLACK = new Color(0, 0, 0).getRGB();
     private static final int WHITE = new Color(232, 229, 229).getRGB();
     // 支持的图片格式
@@ -226,12 +232,25 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
         topPanelTwo.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         // 颜色
         colorLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_COLOUR_TEXT));
-        // 前景色
-        JXColorSelectionButton jxColorSelectionButton = new JXColorSelectionButton();
-        jxColorSelectionButton.setText("颜色");
-        // 背景色
+        forntColorLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_FORNTCOLOR_TEXT));
+        // 前景色-取色器
+        frontJxColorSelectionButton = new JXColorSelectionButton(Color.WHITE);
+        frontJxColorSelectionButton.setBorderPainted(false);
+        frontJxColorSelectionButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        frontJxColorSelectionButton.setHorizontalAlignment(SwingConstants.CENTER);
+        frontJxColorSelectionButton.setPreferredSize(new Dimension(40,40));
+
+        backColorLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_COLOUR_TEXT));
+        // 背景色-取色器
+        backJxColorSelectionButton = new JXColorSelectionButton(Color.BLACK);
+        backJxColorSelectionButton.setBorderPainted(false);
+        backJxColorSelectionButton.setPreferredSize(new Dimension(40,40));
+
         topPanelTwo.add(colorLabel);
-        topPanelTwo.add(jxColorSelectionButton);
+        topPanelTwo.add(forntColorLabel);
+        topPanelTwo.add(frontJxColorSelectionButton);
+        topPanelTwo.add(backColorLabel);
+        topPanelTwo.add(backJxColorSelectionButton);
     }
 
     /**

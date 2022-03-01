@@ -67,7 +67,9 @@ public class I18nBundle extends AbstractBundle {
 
         QRCODEIMAGEPANEL_TOQRCODEBUTTON_TEXT("qrcodeimagepanel_toQrcodebutton_text"),
         QRCODEIMAGEPANEL_BASICLABEL_TEXT("qrcodeimagepanel_basicLabel_text"),
-        QRCODEIMAGEPANEL_COLOUR_TEXT("qrcodeimagepanel_colour_text"),
+        QRCODEIMAGEPANEL_COLOUR_TEXT("qrcodeimagepanel_color_text"),
+        QRCODEIMAGEPANEL_FORNTCOLOR_TEXT("qrcodeimagepanel_forntcolor_text"),
+        QRCODEIMAGEPANEL_BACKTCOLOR_TEXT("qrcodeimagepanel_backtcolor_text"),
 
         HINTS_QRCODEIMAGEPANEL_TEXT_1("hints_QRCodeImagePanel_text_1"),
         HINTS_QRCODEIMAGEPANEL_TEXT_2("hints_QRCodeImagePanel_text_2"),
