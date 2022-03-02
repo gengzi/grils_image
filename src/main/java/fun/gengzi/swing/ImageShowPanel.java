@@ -1,7 +1,6 @@
 package fun.gengzi.swing;
 
 
-import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.constant.ImagePanelTipsConstant;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.imgeservice.ImagePanelHint;
@@ -12,8 +11,6 @@ import org.jdesktop.swingx.JXPanel;
 
 import java.awt.*;
 import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

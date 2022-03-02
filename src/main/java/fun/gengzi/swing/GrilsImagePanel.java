@@ -1,15 +1,7 @@
 package fun.gengzi.swing;
 
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
-import com.intellij.openapi.fileEditor.impl.EditorWindow;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.service.StockImpl;
 import fun.gengzi.utils.I18nBundle;
@@ -25,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 
 /**
