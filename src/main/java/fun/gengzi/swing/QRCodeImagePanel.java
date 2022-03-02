@@ -1,10 +1,9 @@
 package fun.gengzi.swing;
 
 
-import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
@@ -29,11 +28,13 @@ import com.intellij.util.containers.ContainerUtil;
 import fun.gengzi.constant.GlobalConstant;
 import fun.gengzi.constant.ImagePanelTipsConstant;
 import fun.gengzi.enums.FileNameExtendEnum;
+import fun.gengzi.filetype.PictureChooserDescriptor;
 import fun.gengzi.imgeservice.ImageFilePathProcess;
 import fun.gengzi.imgeservice.ImagePanelHint;
 import fun.gengzi.message.NotficationMsg;
 import fun.gengzi.utils.I18nBundle;
 import fun.gengzi.utils.UiRefreshThreadUtils;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -46,6 +47,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +96,10 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
     private JXLabel colorLabel;
     private JXLabel forntColorLabel;
     private JXLabel backColorLabel;
+    // logo
+    private JTextField pathTextField;
+    private JLabel path;
+    private JButton viewButton;
     private static final int BLACK = new Color(0, 0, 0).getRGB();
     private static final int WHITE = new Color(232, 229, 229).getRGB();
     // 支持的图片格式
@@ -109,6 +116,20 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
             I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOW),
             I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOWEST)
     );
+
+
+    @Getter
+    @AllArgsConstructor
+    enum QrcodeimagepanelEnum {
+        HIGH(0, I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_HIGH), ErrorCorrectionLevel.H),
+        MEDIUM(1, I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_MEDIUM), ErrorCorrectionLevel.Q),
+        LOW(2, I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOW), ErrorCorrectionLevel.M),
+        LOWEST(3, I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_ERRORCORRECTIONOPTIONS_LOWEST), ErrorCorrectionLevel.L);
+        Integer index;
+        String message;
+        ErrorCorrectionLevel errorCorrectionLevel;
+    }
+
 
 
     private static final int[] SIZEVALUES = ArrayUtil.range(1, 11, 1);
@@ -143,8 +164,10 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         configPanelone();
         configPaneltwo();
+        configPanelThree();
         topPanel.add(topPanelOne);
         topPanel.add(topPanelTwo);
+        topPanel.add(topPanelThree);
 
 
         // 中部
@@ -238,19 +261,33 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
         frontJxColorSelectionButton.setBorderPainted(false);
         frontJxColorSelectionButton.setHorizontalTextPosition(SwingConstants.CENTER);
         frontJxColorSelectionButton.setHorizontalAlignment(SwingConstants.CENTER);
-        frontJxColorSelectionButton.setPreferredSize(new Dimension(40,40));
+        frontJxColorSelectionButton.setPreferredSize(new Dimension(40, 40));
 
         backColorLabel = new JXLabel(I18nBundle.message(I18nBundle.Key.QRCODEIMAGEPANEL_COLOUR_TEXT));
         // 背景色-取色器
         backJxColorSelectionButton = new JXColorSelectionButton(Color.BLACK);
         backJxColorSelectionButton.setBorderPainted(false);
-        backJxColorSelectionButton.setPreferredSize(new Dimension(40,40));
+        backJxColorSelectionButton.setPreferredSize(new Dimension(40, 40));
 
         topPanelTwo.add(colorLabel);
         topPanelTwo.add(forntColorLabel);
         topPanelTwo.add(frontJxColorSelectionButton);
         topPanelTwo.add(backColorLabel);
         topPanelTwo.add(backJxColorSelectionButton);
+    }
+
+    /**
+     * 第三层配置
+     */
+    private void configPanelThree() {
+        // 顶部panel
+        topPanelThree = new JXPanel(new BorderLayout());
+        path = new JLabel("Logo:");
+        pathTextField = new JTextField();
+        viewButton = new JButton("view..");
+        topPanelThree.add(path, BorderLayout.BEFORE_LINE_BEGINS);
+        topPanelThree.add(pathTextField, BorderLayout.CENTER);
+        topPanelThree.add(viewButton, BorderLayout.EAST);
     }
 
     /**
@@ -286,12 +323,6 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
             }
             ApplicationManager.getApplication().invokeLater(() -> NotficationMsg.notifySaveImgMsg(filePath));
         });
-//        imgTypeComboBox.addActionListener(e -> {
-//            // 获取现在选择的选项
-//            String selectedItem = (String) imgTypeComboBox.getSelectedItem();
-//            imageTypeTextField.setText(tobase64ImageTypeStr(selectedItem));
-//        });
-
         toQRcodeButton.addActionListener(e -> {
             ApplicationManager.getApplication().invokeLater(() -> {
                 String content = qrCodeEditor.getText();
@@ -301,17 +332,61 @@ public class QRCodeImagePanel extends JXPanel implements ImageFilePathProcess, I
             });
 
         });
+
+        /**
+         * 文件选择按钮
+         */
+        viewButton.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 文件类型
+                FileChooserDescriptor imageDescriptor = PictureChooserDescriptor.getInstance();
+                Project openProjects = ProjectManager.getInstance().getDefaultProject();
+                // 触发文件选择
+                VirtualFile virtualFile = FileChooser.chooseFile(imageDescriptor, openProjects, null);
+                String imgPath = virtualFile.getCanonicalPath();
+                // 将文件路径设置到文本区域
+                pathTextField.setText(imgPath);
+                // 刷线当前页面的图片
+            }
+        });
     }
 
-    private ImgEntity getImg(String base64Content) {
-        if (StrUtil.isBlank(base64Content)) {
+    private ImgEntity getImg(String content) {
+        if (StrUtil.isBlank(content)) {
             return null;
         }
         ImgEntity imgEntity = new ImgEntity();
         QrConfig config = new QrConfig();
+        // 获取基础配置
+        // 基本，纠错能力
+        String errorType = errorCorrectionOptionsComboBox.getSelectedItem().toString();
+        int selectedIndex = errorCorrectionOptionsComboBox.getSelectedIndex();
+        QrcodeimagepanelEnum qrcodeimagepanelEnum = QrcodeimagepanelEnum.values()[selectedIndex];
+        // 尺寸
+        String sizeType = sizeComboBox.getSelectedItem().toString();
+        int size = Integer.parseInt(sizeType) * 100;
+        // 前景色
+        Color frontColor = frontJxColorSelectionButton.getBackground();
+        // 背景色
+        Color backColor = backJxColorSelectionButton.getBackground();
         // 高纠错级别
-        config.setErrorCorrection(ErrorCorrectionLevel.H);
-        BufferedImage generate = QrCodeUtil.generate(base64Content, config);
+        config.setErrorCorrection(qrcodeimagepanelEnum.getErrorCorrectionLevel());
+        // 处理logo
+        if(ObjectUtil.isNotEmpty(pathTextField.getText())){
+            config.setImg(pathTextField.getText());
+        }
+        // 宽高
+        config.setWidth(size);
+        config.setHeight(size);
+        config.setForeColor(frontColor);
+        config.setBackColor(backColor);
+        BufferedImage generate = QrCodeUtil.generate(content, config);
         imgEntity.setImgType("png");
         imgEntity.setImage(generate);
         return imgEntity;
