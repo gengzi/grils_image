@@ -72,8 +72,6 @@ public class ImageShow {
     // 存储所有选项卡中的面板
     private static final ConcurrentHashSet allTabbedPane = new ConcurrentHashSet<JXPanel>();
 
-    private static final String arr[] = {"*请上传小于300KB的.jpg/.jpeg/.gif/.bmp/.png/.ico格式图片，不建议将大图转换。","base64图片转换工具，是一款可以在线任意图片格式转Base64 DataUrl编码工具,可以让你很方便地在没有上传文件的条件下将图片插入其它的网页、编辑器中。"};
-
     public ImageShow() {
         LOG.info("加载开始");
         // 初始化组件
