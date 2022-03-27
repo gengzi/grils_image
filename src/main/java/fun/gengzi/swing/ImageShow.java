@@ -213,6 +213,10 @@ public class ImageShow {
         imgTabbedPane.addTab(I18nBundle.message(I18nBundle.Key.IMGTABBEDPANE_TAB_QRCODEIMAGEPANEL), qrCodeImagePanel);
         allTabbedPane.add(qrCodeImagePanel);
 
+        PlayVideoPanel playVideoPanel = new PlayVideoPanel();
+        imgTabbedPane.addTab("video", playVideoPanel);
+        allTabbedPane.add(playVideoPanel);
+
 
 //        // 美女图片
 //        grilsImagePanel = new GrilsImagePanel();
